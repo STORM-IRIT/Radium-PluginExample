@@ -10,6 +10,10 @@ namespace MyPluginExample {
         ui(new Ui::MyWidget)
     {
         ui->setupUi(this);
+
+        // signal to signal connection not possible in QtDesigner
+        connect(ui->_paramModelName, &QComboBox::currentTextChanged,
+                this,                &MyWidget::selectedModelChanged);
     }
 
     MyWidget::~MyWidget()
@@ -19,7 +23,7 @@ namespace MyPluginExample {
 
     void MyWidget::addInputModel(const QString &name)
     {
-        ui->_paramModelName->addItem(QString::fromStdString(name));
+        ui->_paramModelName->addItem(name);
     }
 
     void MyWidget::on__runButton_clicked()

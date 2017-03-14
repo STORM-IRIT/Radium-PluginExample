@@ -59,25 +59,8 @@
   </layout>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>_paramModelName</sender>
-   <signal>currentTextChanged(QString)</signal>
-   <receiver>MyWidget</receiver>
-   <slot>selectedModelChanged(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>294</x>
-     <y>47</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>199</x>
-     <y>149</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
  <slots>
-  <slot>selectedModelChanged(QString)</slot>
+  <signal>selectedModelChanged(QString)</signal>
  </slots>
 </ui>

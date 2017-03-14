@@ -28,7 +28,7 @@ namespace MyPluginExample
     class MyWidget;
 
     struct Param {
-        std::string entityName;
+        QString entityName;
     };
 
 // Du to an ambigous name while compiling with Clang, must differentiate plugin claas from plugin namespace
@@ -51,7 +51,7 @@ namespace MyPluginExample
         virtual QMenu* getMenu() override;
 
     private slots:
-        void registerInputModel( const std::string& name);
+        void registerInputModel(const QString &name);
 
     private:
         MySystem* _system;

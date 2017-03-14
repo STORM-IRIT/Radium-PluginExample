@@ -54,7 +54,7 @@ namespace MyPluginExample
         return nullptr;
     }
 
-    void MyPluginC::registerInputModel(const std::string &name)
+    void MyPluginC::registerInputModel(const QString &name)
     {
         _widget->addInputModel(name);
     }
