@@ -37,6 +37,7 @@ endif(MSVC OR MSVC_IDE)
 file( GLOB_RECURSE sources src/*.cpp )
 file( GLOB_RECURSE headers src/*.hpp )
 file( GLOB_RECURSE inlines src/*.inl )
+file( GLOB_RECURSE markdowns *.md src/*.md )
 
 file(GLOB_RECURSE app_uis  src/*.ui)
 qt5_wrap_ui(app_uis_moc ${app_uis})
@@ -64,6 +65,7 @@ add_library(
     ${sources}
     ${headers}
     ${inlines}
+    ${markdowns}
     ${app_uis})
 
 target_compile_definitions(PluginExample PRIVATE "-DPluginExample_EXPORTS")
