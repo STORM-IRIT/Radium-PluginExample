@@ -22,7 +22,7 @@ Note:
 1. Compile Radium Engine in `Release` mode
 2. Compile Plugin
   - From the folder `Radium-AppExample:`, run `mkdir build-rel && cd build-rel`
-  - Compile with `cmake -DCMAKE_BUILD_TYPE=Release && make -j 4`
+  - Compile with `cmake -DCMAKE_BUILD_TYPE=Release .. && make -j 4`
 3. Go to Radium Engine binaries with `cd ../../Radium-Engine/Release/bin`, which should contain the plugin binary.
 4. Run Radium
 
