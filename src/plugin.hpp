@@ -29,9 +29,19 @@ namespace MyPluginExample
 
     struct Param {
         QString entityName;
+        QString dataId;
     };
 
 // Du to an ambigous name while compiling with Clang, must differentiate plugin claas from plugin namespace
+    /*!
+     * \brief Plugin class of this tutorial, wiring the UI and the System in Radium
+     *
+     * The main objective of this class are:
+     *  - storing the plugin UI and widget
+     *  - registering the plugin and its system in Radium: #registerPlugin
+     *  - add the widget in the UI: #doAddWidget and #getWidget.
+     *
+     */
     class MyPluginC : public QObject, Ra::Plugins::RadiumPluginInterface
     {
         Q_OBJECT

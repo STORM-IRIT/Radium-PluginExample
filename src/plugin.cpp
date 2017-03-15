@@ -30,6 +30,7 @@ namespace MyPluginExample
         delete (_widget);
         _widget = new MyWidget();
 
+        // Wire system and UI
         connect(_system, &MySystem::newInputModelRegistered,
                 _widget, &MyWidget::addInputModel);
         connect(_widget, &MyWidget::computationRequested,
