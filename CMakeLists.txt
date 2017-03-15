@@ -9,8 +9,8 @@ find_package( Radium REQUIRED)
 
 
 # use Radium's common compilation options
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${RADIUM_ROOT}/CMakeModules)
-#include (CompileFlags)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${RADIUM_ROOT_DIR}/CMakeModules)
+include (CompileFlags)
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${RADIUM_PLUGIN_OUTPUT_PATH} )
 
