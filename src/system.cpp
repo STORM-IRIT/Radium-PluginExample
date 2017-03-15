@@ -50,9 +50,47 @@ namespace MyPluginExample
     {
     }
 
-    void MySystem::compute(Param /*p*/)
+    /*!
+     * \brief MySystem::compute Called from the UI, smooths the triangle mesh
+     * \param p Parameter set from the ui.
+     */
+    void MySystem::compute(Param p)
     {
+        using Ra::Engine::ComponentMessenger;
+        using Ra::Core::TriangleMesh;
+
         LOG(logINFO) << "Example Plugin System: computation requested.";
+
+        // Get the triangle mesh associated to the selected point
+        TriangleMesh* mesh = nullptr;
+
+        {
+            auto em =  Ra::Engine::RadiumEngine::getInstance()->getEntityManager();
+            Ra::Engine::Entity* e = em->entityExists(p.entityName.toStdString()) ?
+                        em->getEntity(p.entityName.toStdString()):
+                        nullptr;
+
+            if( e!= nullptr ){
+                // here we check if any component exports the a rw access to the
+                // triangle mesh.
+                // In practice, the plugin FancyMesh embedded in Radium does it.
+                // @see FancyMeshComponent.cpp:156
+                bool hasMesh = ComponentMessenger::getInstance()->
+                        canRw<TriangleMesh>( e, p.dataId.toStdString() );
+
+                if (hasMesh){
+                    mesh = ComponentMessenger::getInstance()->
+                            rwCallback<TriangleMesh>( e, p.dataId.toStdString() )();
+                }
+            }
+        }
+
+        // process geometry
+        if (mesh != nullptr) {
+            LOG(logINFO) << "Example Plugin System: processing starts...";
+
+            // TODO
+        }
     }
 
 } // namespace MyPlugin
