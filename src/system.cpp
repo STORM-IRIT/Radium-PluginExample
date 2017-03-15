@@ -30,14 +30,18 @@ namespace MyPluginExample
                                        const Ra::Asset::FileData* fileData )
     {
         auto geomData = fileData->getGeometryData();
+        QString entityName = QString::fromStdString(entity->getName());
 
-        uint id = 0;
+        LOG(logINFO) << "New entity: " << qPrintable(entityName)
+                     << " with " << geomData.size()
+                     << " geometry "
+                     << (geomData.size() <= 1 ? " component." : "components.");
 
-        for ( const auto& data : geomData )
+        // Register the geometry data associated to the loaded entities
+        for ( const auto& geometry : geomData )
         {
-            std::string componentName = "FMC_" + entity->getName() + std::to_string( id++ );
-            LOG(logINFO) << "New entity: " << componentName.c_str();
-            emit newInputModelRegistered(QString::fromStdString(componentName));
+            emit newInputModelRegistered(entityName,
+                                         QString::fromStdString(geometry->getName()));
         }
     }
 

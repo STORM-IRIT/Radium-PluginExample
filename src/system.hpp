@@ -42,7 +42,8 @@ namespace MyPluginExample
         void compute(Param p);
 
     signals:
-        void newInputModelRegistered( const QString& name );
+        void newInputModelRegistered( const QString& entityName,
+                                      const QString& componentName );
     };
 
 } // namespace MyPlugin

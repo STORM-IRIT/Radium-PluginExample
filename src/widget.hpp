@@ -18,7 +18,7 @@ namespace MyPluginExample {
         ~MyWidget();
 
     public slots:
-        void addInputModel( const QString& name);
+        void addInputModel(const QString& entityName, const QString &componentName);
 
     signals:
         //! Connected _paramModelName::currentIndexChanged in the ui file

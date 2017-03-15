@@ -5,6 +5,8 @@
 
 
 namespace MyPluginExample {
+static const QString separator = "_";
+
     MyWidget::MyWidget(QWidget *parent) :
         QWidget(parent),
         ui(new Ui::MyWidget)
@@ -21,15 +23,22 @@ namespace MyPluginExample {
         delete ui;
     }
 
-    void MyWidget::addInputModel(const QString &name)
+    void MyWidget::addInputModel(const QString &entityName,
+                                 const QString& componentName)
     {
-        ui->_paramModelName->addItem(name);
+        ui->_paramModelName->addItem(entityName + separator + componentName,
+                                     QVariant(QStringList({entityName, componentName})));
     }
 
     void MyWidget::on__runButton_clicked()
     {
+        QVariant data  = ui->_paramModelName->currentData();
+        QStringList sl = data.toStringList();
+
         Param p;
-        p.entityName = ui->_paramModelName->currentText();
+        p.entityName    = sl[0];
+        p.dataId = sl[1];
+
         emit computationRequested(p);
     }
 } // namespace MyPlugin
