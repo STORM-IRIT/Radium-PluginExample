@@ -50,9 +50,6 @@ namespace MyPluginExample
         virtual bool doAddMenu() override;
         virtual QMenu* getMenu() override;
 
-    private slots:
-        void registerInputModel(const QString &name);
-
     private:
         MySystem* _system;
         MyWidget* _widget;
