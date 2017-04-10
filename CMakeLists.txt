@@ -72,10 +72,8 @@ target_compile_definitions(PluginExample PRIVATE "-DPluginExample_EXPORTS")
 
 target_link_libraries(
                    PluginExample
-                   ${RA_CORE_LIB}
-                   ${RA_ENGINE_LIB}
-                   ${RA_GUIBASE_LIB}
-                   ${Qt5Core_LIBRARIES}
-                   ${Qt5Widgets_LIBRARIES}
+                   ${RADIUM_LIBRARIES}              # Radium libs
+                   ${GLBINDING_LIBRARIES}           # Radium dep
+                   ${Qt5_LIBRARIES}                 # the Qt beast
                 )
 

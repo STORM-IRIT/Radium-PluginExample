@@ -54,4 +54,14 @@ namespace MyPluginExample
     {
         return nullptr;
     }
+
+    bool MyPluginC::doAddAction(int &/*nb*/)
+    {
+        return false;
+    }
+
+    QAction *MyPluginC::getAction(int /*id*/)
+    {
+        return nullptr;
+    }
 }
