@@ -9,7 +9,7 @@ find_package( Radium REQUIRED)
 
 
 # use Radium's common compilation options
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${RADIUM_ROOT_DIR}/CMakeModules)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${RADIUM_ROOT_DIR}/cmake)
 include (CompileFlags)
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${RADIUM_PLUGIN_OUTPUT_PATH} )
@@ -56,7 +56,7 @@ include_directories(
     ${Qt5Core_INCLUDE_DIRS}
     ${Qt5Widgets_INCLUDE_DIRS}
     ${RADIUM_INCLUDE_DIR}
-    ${EIGEN_INCLUDE_DIR}
+    ${EIGEN3_INCLUDE_DIR}
     )
 
 # Our library project uses these sources and headers.
