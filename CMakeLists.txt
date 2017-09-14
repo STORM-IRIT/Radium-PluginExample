@@ -55,7 +55,7 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR} # MOC
     ${Qt5Core_INCLUDE_DIRS}
     ${Qt5Widgets_INCLUDE_DIRS}
-    ${RADIUM_INCLUDE_DIR}
+    ${RADIUM_INCLUDE_DIRS}
     ${EIGEN3_INCLUDE_DIR}
     )
 
