@@ -32,7 +32,7 @@ namespace MyPluginExample
      * and use the #ComponentMessenger to access and modify the 3d model geometry.
      *
      */
-    class PLUGIN_API MySystem : public QObject, public Ra::Engine::System
+    class PLUGIN_EXAMPLE_API MySystem : public QObject, public Ra::Engine::System
     {
         Q_OBJECT
     public:

@@ -1,12 +1,12 @@
-#ifndef _PLUGIN_HPP_
-#define _PLUGIN_HPP_
+#ifndef _PLUGIN_EXAMPLE_HPP_
+#define _PLUGIN_EXAMPLE_HPP_
 
 #include <Core/CoreMacros.hpp>
 /// Defines the correct macro to export dll symbols.
-#if defined  DPluginExample_EXPORTS
-    #define PLUGIN_API DLL_EXPORT
+#if defined PluginExample_EXPORTS
+    #define PLUGIN_EXAMPLE_API DLL_EXPORT
 #else
-    #define PLUGIN_API DLL_IMPORT
+    #define PLUGIN_EXAMPLE_API DLL_IMPORT
 #endif
 
 #include <QObject>
@@ -71,4 +71,4 @@ namespace MyPluginExample
 
 } // namespace
 
-#endif // MyPLUGIN_HPP_
+#endif // _PLUGIN_EXAMPLE_HPP_
