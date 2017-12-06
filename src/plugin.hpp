@@ -4,9 +4,9 @@
 #include <Core/CoreMacros.hpp>
 /// Defines the correct macro to export dll symbols.
 #if defined  DPluginExample_EXPORTS
-    #define PLUGIN_EXAMPLE_API DLL_EXPORT
+    #define PLUGIN_API DLL_EXPORT
 #else
-    #define PLUGIN_EXAMPLE_API DLL_IMPORT
+    #define PLUGIN_API DLL_IMPORT
 #endif
 
 #include <QObject>
