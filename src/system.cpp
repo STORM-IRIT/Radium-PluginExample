@@ -4,6 +4,7 @@
 #include <Core/Tasks/Task.hpp>
 #include <Core/Tasks/TaskQueue.hpp>
 #include <Core/Mesh/TriangleMesh.hpp>
+#include <Engine/Renderer/Mesh/Mesh.hpp>
 
 #include <Engine/RadiumEngine.hpp>
 #include <Engine/Entity/Entity.hpp>
@@ -29,19 +30,19 @@ namespace MyPluginExample
     void MySystem::handleAssetLoading( Ra::Engine::Entity* entity,
                                        const Ra::Asset::FileData* fileData )
     {
-        auto geomData = fileData->getGeometryData();
+        const auto& components = entity->getComponents();
         QString entityName = QString::fromStdString(entity->getName());
 
         LOG(logINFO) << "New entity: " << qPrintable(entityName)
-                     << " with " << geomData.size()
-                     << " geometry "
-                     << (geomData.size() <= 1 ? " component." : "components.");
+                     << " with " << components.size()
+                     << " geometry"
+                     << (components.size() <= 1 ? " component." : "components.");
 
         // Register the geometry data associated to the loaded entities
-        for ( const auto& geometry : geomData )
+        for ( const auto& comp : components )
         {
             emit newInputModelRegistered(entityName,
-                                         QString::fromStdString(geometry->getName()));
+                                         QString::fromStdString(comp->getName()));
         }
     }
 
@@ -58,37 +59,18 @@ namespace MyPluginExample
     {
         using Ra::Engine::ComponentMessenger;
         using Ra::Core::TriangleMesh;
+	using Ra::Engine::Mesh;
 
         LOG(logINFO) << "Example Plugin System: computation requested.";
 
-        // Get the triangle mesh associated to the selected point
-        TriangleMesh* mesh = nullptr;
-
-        {
-            auto em =  Ra::Engine::RadiumEngine::getInstance()->getEntityManager();
-            Ra::Engine::Entity* e = em->entityExists(p.entityName.toStdString()) ?
-                        em->getEntity(p.entityName.toStdString()):
-                        nullptr;
-
-            if( e!= nullptr ){
-                // here we check if any component exports the a rw access to the
-                // triangle mesh.
-                // In practice, the plugin FancyMesh embedded in Radium does it.
-                // @see FancyMeshComponent.cpp:156
-                bool hasMesh = ComponentMessenger::getInstance()->
-                        canRw<TriangleMesh>( e, p.dataId.toStdString() );
-
-                if (hasMesh){
-                    mesh = ComponentMessenger::getInstance()->
-                            rwCallback<TriangleMesh>( e, p.dataId.toStdString() )();
-                }
-            }
-        }
+	Mesh* mesh = Ra::Engine::RadiumEngine::getInstance()->getMesh(p.entityName.toStdString(),
+								      p.dataId.toStdString() );
 
         // process geometry
         if (mesh != nullptr) {
             LOG(logINFO) << "Example Plugin System: processing starts...";
 
+            TriangleMesh& trmesh = mesh->getGeometry();
             // TODO
         }
     }
