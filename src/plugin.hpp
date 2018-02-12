@@ -32,7 +32,7 @@ namespace MyPluginExample
         QString dataId;
     };
 
-// Du to an ambigous name while compiling with Clang, must differentiate plugin claas from plugin namespace
+    // Due to an ambigous name while compiling with Clang, must differentiate plugin class from plugin namespace
     /*!
      * \brief Plugin class of this tutorial, wiring the UI and the System in Radium
      *
