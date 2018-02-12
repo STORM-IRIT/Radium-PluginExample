@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 2.8.11)
 project(Radium-PluginExample)
 set(PLUGIN_NAME PluginExample)
 
@@ -81,10 +81,12 @@ add_library(
 
 target_compile_definitions(${PLUGIN_NAME} PRIVATE "-D${PLUGIN_NAME}_EXPORTS")
 
+
 target_link_libraries(
                    ${PLUGIN_NAME}
                    ${RADIUM_LIBRARIES}              # Radium libs
                    ${GLBINDING_LIBRARIES}           # Radium dep
                    ${Qt5_LIBRARIES}                 # the Qt beast
+                   ${OPENMESH_LIBRARIES}            # OpenMesh
                 )
 
