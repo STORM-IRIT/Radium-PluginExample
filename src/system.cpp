@@ -7,7 +7,7 @@
 #include <Engine/Renderer/Mesh/Mesh.hpp>
 #include <Core/Mesh/HalfEdge.hpp>
 #include <Core/Mesh/MeshUtils.hpp>
-#include <Core/Mesh/Wrapper/TopologicalMeshConvert.hpp>
+#include <Core/Mesh/TopologicalTriMesh/TopologicalMesh.hpp>
 
 #include <Engine/RadiumEngine.hpp>
 #include <Engine/Entity/Entity.hpp>
@@ -39,7 +39,7 @@ namespace MyPluginExample
         LOG(logINFO) << "New entity: " << qPrintable(entityName)
                      << " with " << components.size()
                      << " geometry"
-                     << (components.size() <= 1 ? " component." : "components.");
+                     << (components.size() <= 1 ? " component." : " components.");
 
         // Register the geometry data associated to the loaded entities
         for ( const auto& comp : components )
@@ -77,10 +77,7 @@ void MySystem::compute(Param p)
     if (mesh != nullptr) {
         LOG(logINFO) << "Example Plugin System: processing starts...";
 
-        TriangleMesh& trmesh = mesh->getGeometry();
-
-        TopologicalMesh topologicalMesh;
-        Ra::Core::MeshConverter::convert(trmesh, topologicalMesh);
+        TopologicalMesh topologicalMesh (mesh->getGeometry());
 
         OpenMesh::VPropHandleT<Scalar> vertex_weights_;
         topologicalMesh.add_property(vertex_weights_);
@@ -111,13 +108,13 @@ void MySystem::compute(Param p)
             p2     = &topologicalMesh.point(topologicalMesh.to_vertex_handle(heh2));
             d0     = (*p0 - *p2); d0.normalize();
             d1     = (*p1 - *p2); d1.normalize();
-            weight += static_cast<TopologicalMesh::Scalar>(1.0) / tan(acos(std::max(lb, std::min(ub, dot(d0,d1) ))));
+            weight += static_cast<TopologicalMesh::Scalar>(1.0) / std::tan(acos(std::max(lb, std::min(ub, d0.dot(d1) ))));
 
             heh2   = topologicalMesh.next_halfedge_handle(heh1);
             p2     = &topologicalMesh.point(topologicalMesh.to_vertex_handle(heh2));
             d0     = (*p0 - *p2); d0.normalize();
             d1     = (*p1 - *p2); d1.normalize();
-            weight += static_cast<TopologicalMesh::Scalar>(1.0) / tan(acos(std::max(lb, std::min(ub, dot(d0,d1) ))));
+            weight += static_cast<TopologicalMesh::Scalar>(1.0) / std::tan(acos(std::max(lb, std::min(ub, d0.dot(d1) ))));
 
             topologicalMesh.property(vertex_weights_, v0) += weight;
             topologicalMesh.property(vertex_weights_, v1) += weight;
@@ -164,12 +161,7 @@ void MySystem::compute(Param p)
             topologicalMesh.set_point( v_it, (*cog_it));
         }
 
-        Ra::Core::MeshConverter::convert(topologicalMesh, trmesh);
-        Ra::Core::Vector3Array normals;
-        Ra::Core::MeshUtils::getAutoNormals( trmesh, normals );
-        std::swap( trmesh.m_normals, normals );
-
-        mesh->loadGeometry(trmesh);
+        mesh->loadGeometry( topologicalMesh.toTriangleMesh() );
     }
 }
 
