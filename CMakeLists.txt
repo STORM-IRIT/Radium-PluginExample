@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.11)
-project(Radium-PluginExample)
-set(PLUGIN_NAME PluginExample)
+project(Radium-PluginExamples)
+
 
 if (APPLE)
     cmake_policy(SET CMP0042 NEW)
@@ -25,7 +25,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${RADIUM_ROOT_DIR}/cmake)
 include (CompileFlags)
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${RADIUM_PLUGIN_OUTPUT_PATH} )
-message( "${PLUGIN_NAME} output path : ${RADIUM_PLUGIN_OUTPUT_PATH}" )
+message( "${CMAKE_PROJECT_NAME} output path : ${RADIUM_PLUGIN_OUTPUT_PATH}" )
 
 if ( NOT CMAKE_PREFIX_PATH )
   set( CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR} )
@@ -48,45 +48,4 @@ if (MSVC OR MSVC_IDE)
 endif(MSVC OR MSVC_IDE)
 
 
-file( GLOB_RECURSE sources src/*.cpp )
-file( GLOB_RECURSE headers src/*.hpp )
-file( GLOB_RECURSE inlines src/*.inl )
-file( GLOB_RECURSE markdowns *.md src/*.md )
-file( GLOB_RECURSE app_uis  src/*.ui )
-qt5_wrap_ui(app_uis_moc ${app_uis})
-
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
-
-
-# Include look up directories
-include_directories(
-    src/
-    ${CMAKE_CURRENT_BINARY_DIR} # MOC
-    ${Qt5Core_INCLUDE_DIRS}
-    ${Qt5Widgets_INCLUDE_DIRS}
-    ${RADIUM_INCLUDE_DIRS}
-    )
-
-# Our library project uses these sources and headers.
-add_library(
-    ${PLUGIN_NAME} SHARED
-    ${sources}
-    ${headers}
-    ${inlines}
-    ${markdowns}
-    ${app_uis})
-
-
-target_compile_definitions(${PLUGIN_NAME} PRIVATE "-D${PLUGIN_NAME}_EXPORTS")
-
-
-target_link_libraries(
-                   ${PLUGIN_NAME}
-                   ${RADIUM_LIBRARIES}              # Radium libs
-                   ${GLBINDING_LIBRARIES}           # Radium dep
-                   ${Qt5_LIBRARIES}                 # the Qt beast
-                   ${OPENMESH_LIBRARIES}            # OpenMesh
-                )
-
+add_subdirectory( laplacian-smoothing )
