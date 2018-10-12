@@ -1,6 +1,10 @@
 # Radium-PluginExample
-Example of plugin for [Radium Engine](https://github.com/AGGA-IRIT/Radium-Engine), using an external repository to keep your code private (when you need it) and independent from the main repository.
+Example of plugins for [Radium Engine](https://github.com/AGGA-IRIT/Radium-Engine), using an external repository to keep your code private (when you need it) and independent from the main repository.
 This documentation is designed as a tutorial, introducing minimal requirements for Radium Engine plugins development.
+
+Two exemples of plugins are provided in this project:
+ - LaplacianSmoothing: which smooth a mesh in the scene using `Ra::Core::TopologicalMesh`. The mesh is selected by the user using a combobox added into the plugins UI area in Radium Main-App.
+ - RadianceScalingMaterial: illustrate how to add a new material in Radium.
 
 ## Installation
 ### Requirements
@@ -15,7 +19,7 @@ devel/
 ```
 
 Note:
-> As in the [Main Application example](https://github.com/AGGA-IRIT/Radium-AppExample), Radium can also be set as a submodule.
+> As in the [Main Application example](https://github.com/STORM-IRIT/Radium-AppExample), Radium can also be set as a submodule.
 
 ### Compilation
 
