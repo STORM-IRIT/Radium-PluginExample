@@ -3,14 +3,12 @@
 #include <Engine/RadiumEngine.hpp>
 
 #include <system.hpp>
-#include <widget.hpp>
 
 namespace MyPluginExample
 {
 
     MyPluginC::MyPluginC()
-        : _system (nullptr),
-          _widget (nullptr)
+        : _system (nullptr)
     {
     }
 
@@ -22,27 +20,17 @@ namespace MyPluginExample
     {
         delete (_system);
         _system = new MySystem;
-        context.m_engine->registerSystem( "LaplacianSmoothingSystem", _system );
+        context.m_engine->registerSystem( "RadianceScalingSystem", _system );
     }
 
     bool MyPluginC::doAddWidget( QString &name )
     {
-        delete (_widget);
-        _widget = new MyWidget();
-
-        // Wire system and UI
-        connect(_system, &MySystem::newInputModelRegistered,
-                _widget, &MyWidget::addInputModel);
-        connect(_widget, &MyWidget::computationRequested,
-                _system, &MySystem::compute);
-
-        name = "Plugin Example: Laplacian smoothing";
-        return true;
+        return false;
     }
 
     QWidget* MyPluginC::getWidget()
     {
-        return _widget;
+        return nullptr;
     }
 
     bool MyPluginC::doAddMenu()

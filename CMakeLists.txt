@@ -8,13 +8,6 @@ endif(APPLE)
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
-# Qt stuff
-find_package( Qt5Core    REQUIRED )
-find_package( Qt5Widgets REQUIRED )
-add_definitions( ${Qt5Core_DEFINITIONS} )
-add_definitions( ${Qt5Widgets_DEFINITIONS} )
-set(Qt5_LIBRARIES ${Qt5Core_LIBRARIES} ${Qt5Widgets_LIBRARIES})
-
 # Radium Stuff
 find_package( Radium REQUIRED)
 
@@ -49,3 +42,4 @@ endif(MSVC OR MSVC_IDE)
 
 
 add_subdirectory( laplacian-smoothing )
+add_subdirectory( radiance-scaling )

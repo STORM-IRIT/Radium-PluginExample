@@ -1,31 +1,24 @@
 
-set (PLUGIN_NAME "LaplacianSmoothing")
+set (PLUGIN_NAME "RadianceScaling")
 
 # Qt stuff
 find_package( Qt5Core    REQUIRED )
-find_package( Qt5Widgets REQUIRED )
 add_definitions( ${Qt5Core_DEFINITIONS} )
-add_definitions( ${Qt5Widgets_DEFINITIONS} )
-set(Qt5_LIBRARIES ${Qt5Core_LIBRARIES} ${Qt5Widgets_LIBRARIES})
+set(Qt5_LIBRARIES ${Qt5Core_LIBRARIES})
 
 file( GLOB_RECURSE sources ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp )
 file( GLOB_RECURSE headers ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp )
 file( GLOB_RECURSE inlines ${CMAKE_CURRENT_SOURCE_DIR}/*.inl )
 file( GLOB_RECURSE markdowns ${CMAKE_CURRENT_SOURCE_DIR}/*.md )
-file( GLOB_RECURSE app_uis  ${CMAKE_CURRENT_SOURCE_DIR}/*.ui )
-qt5_wrap_ui(app_uis_moc ${app_uis})
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
-
 
 # Include look up directories
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/
     ${CMAKE_CURRENT_BINARY_DIR} # MOC
     ${Qt5Core_INCLUDE_DIRS}
-    ${Qt5Widgets_INCLUDE_DIRS}
     ${RADIUM_INCLUDE_DIRS}
     )
 
@@ -35,8 +28,7 @@ add_library(
     ${sources}
     ${headers}
     ${inlines}
-    ${markdowns}
-    ${app_uis})
+    ${markdowns})
 
 
 target_compile_definitions(${PLUGIN_NAME} PRIVATE "-D${PLUGIN_NAME}_EXPORTS")

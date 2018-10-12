@@ -5,23 +5,6 @@
 
 #include <Engine/System/System.hpp>
 
-namespace Ra
-{
-    namespace Core
-    {
-        struct TriangleMesh;
-    }
-}
-
-namespace Ra
-{
-    namespace Engine
-    {
-        class Entity;
-        struct RenderTechnique;
-        class Component;
-    }
-}
 
 namespace MyPluginExample
 {
@@ -32,7 +15,7 @@ namespace MyPluginExample
      * and use the #ComponentMessenger to access and modify the 3d model geometry.
      *
      */
-    class LAPLACIAN_SMOOTHING_PLUGIN_EXAMPLE_API MySystem : public QObject, public Ra::Engine::System
+    class RADIANCE_SCALING_PLUGIN_EXAMPLE_API MySystem : public QObject, public Ra::Engine::System
     {
         Q_OBJECT
     public:
@@ -44,13 +27,6 @@ namespace MyPluginExample
 
         virtual void generateTasks( Ra::Core::TaskQueue* taskQueue,
                                     const Ra::Engine::FrameInfo& frameInfo ) override;
-
-    public slots:
-        void compute(Param p);
-
-    signals:
-        void newInputModelRegistered( const QString& entityName,
-                                      const QString& componentName );
     };
 
 } // namespace MyPlugin

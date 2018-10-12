@@ -3,10 +3,10 @@
 
 #include <Core/CoreMacros.hpp>
 /// Defines the correct macro to export dll symbols.
-#if defined LaplacianSmoothing_EXPORTS
-    #define LAPLACIAN_SMOOTHING_PLUGIN_EXAMPLE_API DLL_EXPORT
+#if defined RadianceScaling_EXPORTS
+    #define RADIANCE_SCALING_PLUGIN_EXAMPLE_API DLL_EXPORT
 #else
-    #define LAPLACIAN_SMOOTHING_PLUGIN_EXAMPLE_API DLL_IMPORT
+    #define RADIANCE_SCALING_PLUGIN_EXAMPLE_API DLL_IMPORT
 #endif
 
 #include <QObject>
@@ -66,7 +66,6 @@ namespace MyPluginExample
 
     private:
         MySystem* _system;
-        MyWidget* _widget;
     };
 
 } // namespace
