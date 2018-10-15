@@ -3,8 +3,9 @@
 #include <Engine/RadiumEngine.hpp>
 
 #include <system.hpp>
+#include "FakeToonMaterial.hpp"
 
-namespace MyPluginExample
+namespace FakeToonPluginExample
 {
 
     MyPluginC::MyPluginC()
@@ -20,22 +21,11 @@ namespace MyPluginExample
     {
         delete (_system);
         _system = new MySystem;
-        context.m_engine->registerSystem( "RadianceScalingSystem", _system );
+        context.m_engine->registerSystem( "FakeToonSystem", _system );
     }
-
-    bool MyPluginC::doAddWidget( QString &name )
-    {
-        return false;
-    }
-
     QWidget* MyPluginC::getWidget()
     {
         return nullptr;
-    }
-
-    bool MyPluginC::doAddMenu()
-    {
-        return false;
     }
 
     QMenu* MyPluginC::getMenu()
@@ -43,13 +33,13 @@ namespace MyPluginExample
         return nullptr;
     }
 
-    bool MyPluginC::doAddAction(int &/*nb*/)
-    {
-        return false;
-    }
-
     QAction *MyPluginC::getAction(int /*id*/)
     {
-        return nullptr;
+      return nullptr;
+    }
+
+    void MyPluginC::openGlInitialize(const Ra::PluginContext &/*context*/)
+    {
+      FakeToonMaterial::registerMaterial();
     }
 }

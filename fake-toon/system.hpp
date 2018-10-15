@@ -6,7 +6,7 @@
 #include <Engine/System/System.hpp>
 
 
-namespace MyPluginExample
+namespace FakeToonPluginExample
 {
     /*!
      * \brief System class of the plugin tutorial
@@ -15,7 +15,7 @@ namespace MyPluginExample
      * and use the #ComponentMessenger to access and modify the 3d model geometry.
      *
      */
-    class RADIANCE_SCALING_PLUGIN_EXAMPLE_API MySystem : public QObject, public Ra::Engine::System
+    class FAKE_TOON_PLUGIN_EXAMPLE_API MySystem : public QObject, public Ra::Engine::System
     {
         Q_OBJECT
     public:

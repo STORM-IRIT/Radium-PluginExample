@@ -42,4 +42,4 @@ endif(MSVC OR MSVC_IDE)
 
 
 add_subdirectory( laplacian-smoothing )
-add_subdirectory( radiance-scaling )
+add_subdirectory( fake-toon )

@@ -5,6 +5,8 @@
 # RADIUM_INCLUDE_DIRS : the include directories of radium
 # RADIUM_PLUGIN_OUTPUT_PATH : output path for radiums plugin
 # RADIUM_BINARY_OUTPUT_PATH : output path for radiums external binaries
+# RADIUM_SHADER_PATH : output path for radiums shaders
+# RADIUM_CONFIG_PATH : output path for radiums runtime configuration files
 # RADIUM_SUBMODULES_BUILD_TYPE : build type of the 3rdparties
 # RADIUM_SUBMODULES_INSTALL_DIRECTORY : install directory for 3rdparties
 # ASSIMP_LIBRARIES, GLBINDING_LIBRARIES, GLOBJECTS_LIBRARIES
@@ -35,6 +37,8 @@ if ( RADIUM_ROOT_DIR )
   set ( RADIUM_BUNDLE_DIRECTORY "${RADIUM_ROOT_DIR}/Bundle-${CMAKE_CXX_COMPILER_ID}")
   set ( RADIUM_BINARY_OUTPUT_PATH "${RADIUM_BUNDLE_DIRECTORY}/${CMAKE_BUILD_TYPE}/bin")
   set ( RADIUM_PLUGIN_OUTPUT_PATH "${RADIUM_BUNDLE_DIRECTORY}/${CMAKE_BUILD_TYPE}/bin/Plugins")
+  set ( RADIUM_SHADER_PATH "${RADIUM_BUNDLE_DIRECTORY}/${CMAKE_BUILD_TYPE}/bin/Shaders")
+  set ( RADIUM_CONFIG_PATH "${RADIUM_BUNDLE_DIRECTORY}/${CMAKE_BUILD_TYPE}/bin/Configs")
 
   if(MSVC OR MSVC_IDE)
     set(RADIUM_SUBMODULES_INSTALL_DIRECTORY "${RADIUM_BUNDLE_DIRECTORY}/${CMAKE_BUILD_TYPE}/3rdPartyLibraries" )
