@@ -6,13 +6,13 @@ if (APPLE)
     cmake_policy(SET CMP0042 NEW)
 endif(APPLE)
 
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 # Radium Stuff
 find_package( Radium REQUIRED)
 
 # use Radium's common compilation options
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${RADIUM_ROOT_DIR}/cmake)
+list(APPEND CMAKE_MODULE_PATH ${RADIUM_ROOT_DIR}/cmake)
 # perhaps not a good idea of including all the stuff from CompileFlags
 # FIXME : get the correct flags (openmp, float precision, ... instead of the default
 include (CompileFlags)
