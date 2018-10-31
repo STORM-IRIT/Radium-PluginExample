@@ -6,8 +6,6 @@ if (APPLE)
     cmake_policy(SET CMP0042 NEW)
 endif(APPLE)
 
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-
 # Radium Stuff
 find_package( Radium REQUIRED)
 
