@@ -8,7 +8,9 @@ Two exemples of plugins are provided in this project:
 
 ## Installation
 ### Requirements
-We assume that Radium Engine is in your file system, properly compiled, and reachable by using `FindRadium.cmake`.
+We assume that Radium Engine is in your file system and properly compiled.
+To find Radium, cmake needs a file `FindRadium.cmake`, which is packaged with Radium Engine.
+To compile the plugin, you need to set `CMAKE_MODULE_PATH` to the Radium Engine cmake directory (see compilation instructions).
 
 If you are not a Radium Engine expert, we recommend to use the following folder structure:
 
@@ -23,10 +25,12 @@ Note:
 
 ### Compilation
 
+In this section we assume the folder structure follows the above description (if not, update the paths accordingly). 
+
 1. Compile Radium Engine in `Release` mode
 2. Compile Plugin
   - From the folder `Radium-AppExample:`, run `mkdir build-rel && cd build-rel`
-  - Compile with `cmake -DCMAKE_BUILD_TYPE=Release .. && make -j 4`
+  - Compile with `cmake -DCMAKE_MODULE_PATH=../../Radium-Engine/cmake -DCMAKE_BUILD_TYPE=Release .. && make -j 4`
 3. Go to Radium Engine binaries with `cd ../../Radium-Engine/Release/bin`, which should contain the plugin binary.
 4. Run Radium
 
