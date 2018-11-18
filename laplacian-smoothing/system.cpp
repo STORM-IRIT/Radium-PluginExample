@@ -1,20 +1,19 @@
 #include <system.hpp>
 
-#include <Core/String/StringUtils.hpp>
-#include <Core/Tasks/Task.hpp>
-#include <Core/Tasks/TaskQueue.hpp>
-#include <Core/Mesh/TriangleMesh.hpp>
-#include <Engine/Renderer/Mesh/Mesh.hpp>
-#include <Core/Mesh/HalfEdge.hpp>
-#include <Core/Mesh/MeshUtils.hpp>
-#include <Core/Mesh/TopologicalTriMesh/TopologicalMesh.hpp>
-
-#include <Engine/RadiumEngine.hpp>
-#include <Engine/Entity/Entity.hpp>
 #include <Core/File/FileData.hpp>
 #include <Core/File/GeometryData.hpp>
+#include <Core/Mesh/MeshUtils.hpp>
+#include <Core/Mesh/TriangleMesh.hpp>
+#include <Core/Mesh/TopologicalTriMesh/TopologicalMesh.hpp>
+#include <Core/Tasks/Task.hpp>
+#include <Core/Tasks/TaskQueue.hpp>
+#include <Core/String/StringUtils.hpp>
+
+#include <Engine/Entity/Entity.hpp>
 #include <Engine/Managers/ComponentMessenger/ComponentMessenger.hpp>
 #include <Engine/Managers/EntityManager/EntityManager.hpp>
+#include <Engine/RadiumEngine.hpp>
+#include <Engine/Renderer/Mesh/Mesh.hpp>
 
 namespace MyPluginExample
 {
