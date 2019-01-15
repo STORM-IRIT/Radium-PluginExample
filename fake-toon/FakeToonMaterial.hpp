@@ -8,7 +8,7 @@ namespace FakeToonPluginExample {
 /// Simple shader class implementing basic toon shader
 class FAKE_TOON_PLUGIN_EXAMPLE_API FakeToonMaterial final : public Ra::Engine::Material {
   public:
-    RA_CORE_ALIGNED_NEW
+    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
     explicit FakeToonMaterial( const std::string& name );
 
 

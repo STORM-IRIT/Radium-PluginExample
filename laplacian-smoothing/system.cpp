@@ -1,13 +1,12 @@
 #include <system.hpp>
 
-#include <Core/File/FileData.hpp>
-#include <Core/File/GeometryData.hpp>
-#include <Core/Mesh/MeshUtils.hpp>
-#include <Core/Mesh/TriangleMesh.hpp>
-#include <Core/Mesh/TopologicalTriMesh/TopologicalMesh.hpp>
+#include <Core/Asset/FileData.hpp>
+#include <Core/Asset/GeometryData.hpp>
+#include <Core/Geometry/TriangleMesh.hpp>
+#include <Core/Geometry/TopologicalMesh.hpp>
 #include <Core/Tasks/Task.hpp>
 #include <Core/Tasks/TaskQueue.hpp>
-#include <Core/String/StringUtils.hpp>
+#include <Core/Utils/StringUtils.hpp>
 
 #include <Engine/Entity/Entity.hpp>
 #include <Engine/Managers/ComponentMessenger/ComponentMessenger.hpp>
@@ -17,6 +16,8 @@
 
 namespace MyPluginExample
 {
+
+    using namespace Ra::Core::Utils;
 
     MySystem::MySystem()
         : Ra::Engine::System()
@@ -30,7 +31,7 @@ namespace MyPluginExample
     }
 
     void MySystem::handleAssetLoading( Ra::Engine::Entity* entity,
-                                       const Ra::Asset::FileData* fileData )
+                                       const Ra::Core::Asset::FileData* fileData )
     {
         const auto& components = entity->getComponents();
         QString entityName = QString::fromStdString(entity->getName());
@@ -61,10 +62,8 @@ void MySystem::compute(Param p)
 {
     using Ra::Engine::ComponentMessenger;
     using Ra::Core::TriangleMesh;
-    using Ra::Core::TopologicalMesh;
-    using Ra::Core::Triangle;
+    using Ra::Core::Geometry::TopologicalMesh;
     using Ra::Core::Vector3;
-    using Ra::Core::VertexIdx;
     using Ra::Engine::Mesh;
 
     LOG(logINFO) << "Example Plugin System: computation requested.";

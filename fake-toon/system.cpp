@@ -1,8 +1,9 @@
 #include <system.hpp>
 
-#include <Core/Log/Log.hpp>
-#include <Core/File/FileData.hpp>
-#include <Core/File/GeometryData.hpp>
+#include <Core/Utils/Log.hpp>
+#include <Core/Utils/Index.hpp>
+#include <Core/Asset/FileData.hpp>
+#include <Core/Asset/GeometryData.hpp>
 #include <Engine/Managers/ComponentMessenger/ComponentMessenger.hpp>
 #include <Engine/Renderer/RenderObject/RenderObjectManager.hpp>
 #include <Engine/Renderer/RenderObject/RenderObject.hpp>
@@ -13,7 +14,7 @@
 
 namespace FakeToonPluginExample
 {
-
+    using namespace Ra::Core::Utils;
     MySystem::MySystem()
         : Ra::Engine::System()
     {
@@ -26,8 +27,9 @@ namespace FakeToonPluginExample
     }
 
     void MySystem::handleAssetLoading( Ra::Engine::Entity* entity,
-                                       const Ra::Asset::FileData* fileData )
+                                       const Ra::Core::Asset::FileData* fileData )
     {
+      using Ra::Core::Utils::Index;
 
       auto roMgr = Ra::Engine::RadiumEngine::getInstance()->getRenderObjectManager();
 
@@ -37,8 +39,8 @@ namespace FakeToonPluginExample
 
           auto data = fileData->getGeometryData();
           for (auto geom : data){
-              if ( Ra::Engine::ComponentMessenger::getInstance()->canGet <Ra::Core::Index>( entity, geom->getName()) ) {
-                  auto idx = * Ra::Engine::ComponentMessenger::getInstance()->getterCallback<Ra::Core::Index>( entity, geom->getName())();
+              if ( Ra::Engine::ComponentMessenger::getInstance()->canGet <Index>( entity, geom->getName()) ) {
+                  auto idx = * Ra::Engine::ComponentMessenger::getInstance()->getterCallback<Index>( entity, geom->getName())();
 
                   if(idx.isValid() && roMgr->exists( idx ) ){
                       auto rt = std::make_shared<Ra::Engine::RenderTechnique>();

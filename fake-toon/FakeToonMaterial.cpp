@@ -4,6 +4,7 @@
 #include <Engine/Renderer/RenderTechnique/ShaderConfigFactory.hpp>
 #include <Engine/Renderer/RenderTechnique/ShaderProgram.hpp>
 #include <Core/Math/LinearAlgebra.hpp>
+#include <Core/Utils/Color.hpp>
 
 
 namespace FakeToonPluginExample {
@@ -20,8 +21,9 @@ void FakeToonMaterial::bind(const Ra::Engine::ShaderProgram *shader) {
       return;
   }
 
-  Ra::Core::Color m_kd( 0.9, 0.9, 0.9, 1.0 );
-  Ra::Core::Color m_ks( 0.0, 0.0, 0.0, 1.0 );
+  using namespace Ra::Core::Utils;
+  Color m_kd( 0.9, 0.9, 0.9, 1.0 );
+  Color m_ks( 0.0, 0.0, 0.0, 1.0 );
   Scalar m_ns( 1.0 );
   Scalar m_alpha( 1.0 );
 
