@@ -1,69 +1,66 @@
-
-set (PLUGIN_NAME "ShaderFakeToon")
+cmake_minimum_required(VERSION 3.6)
+#------------------------------------------------------------------------------
+# Policies and global parameters for CMake
+if (POLICY CMP0077)
+    cmake_policy(SET CMP0077 NEW)
+endif ()
+set(CMAKE_DISABLE_SOURCE_CHANGES ON)
+set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
+#------------------------------------------------------------------------------
+# Project definition
+project(ShaderFakeToon VERSION 1.0.0 LANGUAGES CXX)
 
 # Qt stuff
-find_package( Qt5Core    REQUIRED )
-add_definitions( ${Qt5Core_DEFINITIONS} )
-set(Qt5_LIBRARIES ${Qt5Core_LIBRARIES})
+find_package(Radium REQUIRED RadiumCore RadiumEngine RadiumPluginBase)
+find_package(Qt5 COMPONENTS Core REQUIRED)
+set(Qt5_LIBRARIES Qt5::Core)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
 
-file( GLOB_RECURSE sources ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp )
-file( GLOB_RECURSE headers ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp )
-file( GLOB_RECURSE inlines ${CMAKE_CURRENT_SOURCE_DIR}/*.inl )
-file( GLOB_RECURSE shaders ${CMAKE_CURRENT_SOURCE_DIR}/Shaders/*_SHADER* )
+set(fktn_sources
+        src/FakeToonMaterial.cpp
+        src/plugin.cpp
+        src/system.cpp
+        )
+
+set(fktn_headers
+        src/FakeToonMaterial.hpp
+        src/plugin.hpp
+        src/system.hpp
+        )
+
+set(fktn_markdowns
+        README.md
+        )
+
+set(fktn_resources
+        Resources/Shaders
+        )
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_AUTOMOC ON)
-
-# Include look up directories
-include_directories(
-    ${CMAKE_CURRENT_SOURCE_DIR}/
-    ${CMAKE_CURRENT_BINARY_DIR} # MOC
-    ${Qt5Core_INCLUDE_DIRS}
-    ${RADIUM_INCLUDE_DIRS}
-    )
 
 # Our library project uses these sources and headers.
 add_library(
-    ${PLUGIN_NAME} SHARED
-    ${sources}
-    ${headers}
-    ${inlines}
-    ${shaders})
-
-set(SHADER_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Shaders/")
-if(MSVC OR MSVC_IDE OR MINGW)
-    add_custom_target(copyShaders
-       #${CMAKE_COMMAND} -E make_directory ${RADIUM_DOC_DIRECTORY}
-       COMMAND ${CMAKE_COMMAND} -E copy_directory
-         ${SHADER_DIR}
-         ${RADIUM_PLUGIN_OUTPUT_PATH}/FakeToon/Shaders
-       DEPENDS
-         ${SHADER_DIR}/FRAGMENT_SHADER.frag
-         ${SHADER_DIR}/VERTEX_SHADER.vert
-       WORKING_DIRECTORY ${RADIUM_BUNDLE_DIRECTORY}
-       COMMENT "Copying shaders to ${RADIUM_PLUGIN_OUTPUT_PATH}/FakeToon/Shaders" VERBATIM
+        ${PROJECT_NAME} SHARED
+        ${fktn_sources}
+        ${fktn_headers}
+        ${fktn_inlines}
+        ${fktn_markdowns}
+        ${fktn_uis}
+        ${fktn_resources}
     )
-else()
-    add_custom_target(copyShaders
-       ${CMAKE_COMMAND} -E make_directory ${RADIUM_PLUGIN_OUTPUT_PATH}/FakeToon
-       COMMAND ${CMAKE_COMMAND} -E create_symlink
-         ${SHADER_DIR}
-         ${RADIUM_PLUGIN_OUTPUT_PATH}/FakeToon/Shaders
-       WORKING_DIRECTORY ${RADIUM_BUNDLE_DIRECTORY}
-       COMMENT "Symlink shaders to ${RADIUM_PLUGIN_OUTPUT_PATH}/FakeToon/Shaders" VERBATIM
-    )
-endif()
 
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
+target_compile_definitions(${PROJECT_NAME} PRIVATE "-D${PROJECT_NAME}_EXPORTS")
 
-target_compile_definitions(${PLUGIN_NAME} PRIVATE "-D${PLUGIN_NAME}_EXPORTS")
-add_dependencies(${PLUGIN_NAME} copyShaders)
+target_link_libraries(${PROJECT_NAME} PUBLIC
+        Radium::RadiumCore
+        Radium::RadiumEngine
+        Radium::RadiumPluginBase
+        ${Qt5_LIBRARIES}
+        )
 
-
-target_link_libraries(
-                   ${PLUGIN_NAME}
-                   ${RADIUM_LIBRARIES}              # Radium libs
-                   ${GLBINDING_LIBRARIES}           # Radium dep
-                   ${Qt5_LIBRARIES}                 # the Qt beast
-                   ${OPENMESH_LIBRARIES}            # OpenMesh
-                )
-
+configure_radium_plugin_install(
+        NAME ${PROJECT_NAME}
+        RESOURCES ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shaders
+)
