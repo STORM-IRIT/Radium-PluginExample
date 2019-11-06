@@ -1,52 +1,72 @@
+cmake_minimum_required(VERSION 3.6)
+#------------------------------------------------------------------------------
+# Policies and global parameters for CMake
+if (POLICY CMP0077)
+    cmake_policy(SET CMP0077 NEW)
+endif ()
+set(CMAKE_DISABLE_SOURCE_CHANGES ON)
+set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
+# Be nice to visual studio
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-set (PLUGIN_NAME "LaplacianSmoothing")
+#------------------------------------------------------------------------------
+# Project definition
+project(LaplacianSmoothing VERSION 1.0.0 LANGUAGES CXX)
 
 # Qt stuff
-find_package( Qt5Core    REQUIRED )
-find_package( Qt5Widgets REQUIRED )
-add_definitions( ${Qt5Core_DEFINITIONS} )
-add_definitions( ${Qt5Widgets_DEFINITIONS} )
-set(Qt5_LIBRARIES ${Qt5Core_LIBRARIES} ${Qt5Widgets_LIBRARIES})
-
-file( GLOB_RECURSE sources ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp )
-file( GLOB_RECURSE headers ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp )
-file( GLOB_RECURSE inlines ${CMAKE_CURRENT_SOURCE_DIR}/*.inl )
-file( GLOB_RECURSE markdowns ${CMAKE_CURRENT_SOURCE_DIR}/*.md )
-file( GLOB_RECURSE app_uis  ${CMAKE_CURRENT_SOURCE_DIR}/*.ui )
-qt5_wrap_ui(app_uis_moc ${app_uis})
-
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
+find_package(Radium REQUIRED RadiumCore RadiumEngine RadiumPluginBase)
+find_package(Qt5 COMPONENTS Core Widgets REQUIRED)
+set(Qt5_LIBRARIES Qt5::Core Qt5::Widgets)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
+set(lplsmt_sources
+        src/plugin.cpp
+        src/system.cpp
+        src/widget.cpp
+        )
 
-# Include look up directories
+set(lplsmt_headers
+        src/plugin.hpp
+        src/system.hpp
+        src/widget.hpp
+        )
+
+set(lplsmt_markdowns
+        README.md
+        )
+
+set(lplsmt_uis
+        ui/widget.ui
+        )
+qt5_wrap_ui(lplsmt_moc ${lplsmt_uis})
+
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
 include_directories(
-    ${CMAKE_CURRENT_SOURCE_DIR}/
-    ${CMAKE_CURRENT_BINARY_DIR} # MOC
-    ${Qt5Core_INCLUDE_DIRS}
-    ${Qt5Widgets_INCLUDE_DIRS}
-    ${RADIUM_INCLUDE_DIRS}
-    )
+        ${CMAKE_CURRENT_BINARY_DIR} # Moc
+)
 
 # Our library project uses these sources and headers.
 add_library(
-    ${PLUGIN_NAME} SHARED
-    ${sources}
-    ${headers}
-    ${inlines}
-    ${markdowns}
-    ${app_uis})
+        ${PROJECT_NAME} SHARED
+        ${lplsmt_sources}
+        ${lplsmt_headers}
+        ${lplsmt_inlines}
+        ${lplsmt_markdowns}
+        ${lplsmt_uis}
+        ${lplsmt_resources}
+)
 
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
+target_compile_definitions(${PROJECT_NAME} PRIVATE "-D${PROJECT_NAME}_EXPORTS")
 
-target_compile_definitions(${PLUGIN_NAME} PRIVATE "-D${PLUGIN_NAME}_EXPORTS")
+target_link_libraries(${PROJECT_NAME} PUBLIC
+        Radium::RadiumCore
+        Radium::RadiumEngine
+        Radium::RadiumPluginBase
+        ${Qt5_LIBRARIES}
+        )
 
-
-target_link_libraries(
-                   ${PLUGIN_NAME}
-                   ${RADIUM_LIBRARIES}              # Radium libs
-                   ${GLBINDING_LIBRARIES}           # Radium dep
-                   ${Qt5_LIBRARIES}                 # the Qt beast
-                   ${OPENMESH_LIBRARIES}            # OpenMesh
-                )
-
+configure_radium_plugin_install(
+        NAME ${PROJECT_NAME}
+)
