@@ -36,12 +36,12 @@ vec3 getNormal(Material material, vec2 texCoord, vec3 N, vec3 T, vec3 B)
 vec3 computeMaterialInternal(Material material, vec2 texC, vec3 L, vec3 V, vec3 N, vec3 X, vec3 Y) {
     vec3 Kd = material.kd.xyz / Pi;
 
-    float intensity = dot(normalize(L),N);
+    float intensity = dot(normalize(L), N);
 
     if (intensity > 0.85)      intensity = 0.8;
     else if (intensity > 0.45) intensity = 0.45;
     else if (intensity > 0.25) intensity = 0.25;
-    else                       intensity = 0.05;
+    else intensity = 0.05;
 
     return intensity * Kd;
 }
@@ -54,7 +54,7 @@ void main() {
     vec3 tangentLocal  = normalize(cross(binormalLocal, normalLocal));
 
     vec3 materialColor = computeMaterialInternal(material, in_texcoord.xy, in_lightVector, in_viewVector,
-                                                 normalLocal, tangentLocal, binormalLocal);
+    normalLocal, tangentLocal, binormalLocal);
     vec3 lightContribution = lightContributionFrom(light, in_position);
 
     fragColor = vec4(materialColor * lightContribution, 1.0);
