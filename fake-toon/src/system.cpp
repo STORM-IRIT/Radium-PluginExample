@@ -2,7 +2,6 @@
 
 #include "FakeToonMaterial.hpp"
 #include <Core/Asset/FileData.hpp>
-#include <Core/Asset/GeometryData.hpp>
 #include <Core/Utils/Index.hpp>
 #include <Core/Utils/Log.hpp>
 #include <Engine/Entity/Entity.hpp>
@@ -19,6 +18,7 @@ MySystem::MySystem() : Ra::Engine::System() {
 }
 
 MySystem::~MySystem() {
+    FakeToonMaterial::unregisterMaterial();
     LOG( logINFO ) << "FakeToon Plugin System destroyed.";
 }
 

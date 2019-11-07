@@ -1,6 +1,5 @@
 #include "FakeToonMaterial.hpp"
 
-#include <Core/Math/LinearAlgebra.hpp>
 #include <Core/Resources/Resources.hpp>
 #include <Core/Utils/Color.hpp>
 
@@ -54,7 +53,7 @@ void FakeToonMaterial::registerMaterial() {
     Ra::Engine::ShaderConfigurationFactory::addConfiguration( dpconfig );
 
     Ra::Engine::EngineRenderTechniques::registerDefaultTechnique(
-        "FakeToon", [shaderPath]( Ra::Engine::RenderTechnique& rt, bool /*isTransparent*/ ) {
+        "FakeToon", []( Ra::Engine::RenderTechnique& rt, bool /*isTransparent*/ ) {
             // Configuration for RenderTechnique::LIGHTING_OPAQUE (Mandatory)
             auto lpconfig = Ra::Engine::ShaderConfigurationFactory::getConfiguration( "FakeToon" );
             rt.setConfiguration( lpconfig, Ra::Engine::RenderTechnique::LIGHTING_OPAQUE );
