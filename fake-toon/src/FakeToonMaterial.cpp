@@ -7,6 +7,9 @@
 #include <Engine/Renderer/RenderTechnique/ShaderConfigFactory.hpp>
 #include <Engine/Renderer/RenderTechnique/ShaderProgram.hpp>
 
+#include <Core/Utils/Log.hpp>
+using namespace Ra::Core::Utils;
+
 namespace FakeToonPluginExample {
 static const std::string materialName{"FakeToon"};
 
@@ -31,12 +34,13 @@ void FakeToonMaterial::bind( const Ra::Engine::ShaderProgram* shader ) {
 }
 
 void FakeToonMaterial::registerMaterial() {
-    // gets the base path for accessing plugins
-    auto pluginPath = Ra::Core::Resources::getPluginsDir();
-    // Compute the path of the shader :
-    auto shaderPath = pluginPath.substr( 0, pluginPath.find_last_of( '/' ) ); // .../Plugins/lib
-    shaderPath      = shaderPath.substr( 0, shaderPath.find_last_of( '/' ) ) +
-                 "/Resources/ShaderFakeToon/Shaders";
+    // gets the resource path of the plugins
+    Ra::Core::Resources::ResourcesLocator locator(
+        reinterpret_cast<void*>( &FakeToonMaterial::registerMaterial ), "" );
+    auto pluginPath = locator.getBasePath();
+    LOG( logINFO ) << "Plugin Path is " << pluginPath;
+    auto shaderPath = pluginPath.substr( 0, pluginPath.find_last_of( '/' ) ) +
+                      "/Resources/ShaderFakeToon/Shaders";
 
     //  // 1- register the Material converter for loading
     //  EngineMaterialConverters::registerMaterialConverter(
