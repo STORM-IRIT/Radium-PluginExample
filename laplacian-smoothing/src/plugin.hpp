@@ -43,7 +43,7 @@ struct Param {
 class MyPluginC : public QObject, Ra::Plugins::RadiumPluginInterface
 {
     Q_OBJECT
-    Q_PLUGIN_METADATA( IID "RadiumEngine.PluginInterface" )
+    Q_RADIUM_PLUGIN_METADATA
     Q_INTERFACES( Ra::Plugins::RadiumPluginInterface )
 
   public:
