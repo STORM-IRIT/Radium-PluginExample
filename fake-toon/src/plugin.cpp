@@ -13,8 +13,8 @@ MyPluginC::~MyPluginC() {}
 
 void MyPluginC::registerPlugin( const Ra::Plugins::Context& context ) {
     //    delete ( _system );
-    _system = new MySystem;
-    context.m_engine->registerSystem( "FakeToonSystem", _system );
+  _system = new MySystem;
+  context.m_engine->registerSystem( "FakeToonSystem", _system );
 }
 QWidget* MyPluginC::getWidget() {
     return nullptr;
