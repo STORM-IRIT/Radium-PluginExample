@@ -11,7 +11,7 @@ set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 project(ShaderFakeToon VERSION 1.0.0 LANGUAGES CXX)
 
 # Qt stuff
-find_package(Radium REQUIRED RadiumCore RadiumEngine RadiumPluginBase)
+find_package(Radium REQUIRED Core Engine PluginBase)
 find_package(Qt5 COMPONENTS Core REQUIRED)
 set(Qt5_LIBRARIES Qt5::Core)
 set(CMAKE_AUTOMOC ON)
@@ -54,9 +54,9 @@ target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/s
 target_compile_definitions(${PROJECT_NAME} PRIVATE "-D${PROJECT_NAME}_EXPORTS")
 
 target_link_libraries(${PROJECT_NAME} PUBLIC
-        Radium::RadiumCore
-        Radium::RadiumEngine
-        Radium::RadiumPluginBase
+        Radium::Core
+        Radium::Engine
+        Radium::PluginBase
         ${Qt5_LIBRARIES}
         )
 
