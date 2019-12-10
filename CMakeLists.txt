@@ -12,6 +12,8 @@ if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 endif ()
 
 
+add_subdirectory(fake-toon)
+add_subdirectory(laplacian-smoothing)
 add_subdirectory(CameraManip)
 add_subdirectory(Dummy)
 add_subdirectory(MeshFeatureTracking)

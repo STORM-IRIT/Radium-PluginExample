@@ -1,34 +1,3 @@
-# Backup files and other machine-local stuff
-*.user
-*.svn
-*.autosave
-*.dropbox.attr
-*~
-*.orig
-*.swp
-*.old
-.idea/
-\#*\#
-.\#*\#
-.vs
-.clang-format
+*build*
+.idea
 
-# Misc
-*Thumbs.db
-
-# Output Directories
-Bundle*/
-build*/
-cmake-build-*/
-
-# Mercurial stuff (e.g from Eigen)
-.hg*
-
-
-# external libraries
-external/eigen
-external/OpenMesh
-tests/external/Catch2
-
-#Auto-generated plugins registration file
-src/Core/Utils/Version.cpp
