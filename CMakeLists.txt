@@ -1,3 +1,4 @@
+
 cmake_minimum_required(VERSION 3.6)
 project(Radium-PluginsExample)
 
@@ -13,3 +14,7 @@ endif ()
 
 add_subdirectory(fake-toon)
 add_subdirectory(laplacian-smoothing)
+add_subdirectory(CameraManip)
+add_subdirectory(Dummy)
+add_subdirectory(MeshFeatureTracking)
+add_subdirectory(MeshPaint)
