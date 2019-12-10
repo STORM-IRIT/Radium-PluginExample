@@ -3,7 +3,6 @@
 
 #include <DummyPluginMacros.hpp>
 
-#include <Core/Geometry/MeshTypes.hpp>
 #include <Engine/Component/Component.hpp>
 
 namespace Ra {
@@ -16,7 +15,7 @@ namespace DummyPlugin {
 class DUMMY_PLUGIN_API DummyComponent : public Ra::Engine::Component
 {
   public:
-    DummyComponent( const std::string& name );
+    DummyComponent( const std::string& name, Ra::Engine::Entity* entity );
     virtual ~DummyComponent();
 
     virtual void initialize() override;

@@ -22,7 +22,7 @@ class DummySystem;
 class DummyPlugin : public QObject, Ra::Plugins::RadiumPluginInterface
 {
     Q_OBJECT
-    Q_PLUGIN_METADATA( IID "foo.bar.RadiumEngine.PluginInterface" )
+    Q_RADIUM_PLUGIN_METADATA
     Q_INTERFACES( Ra::Plugins::RadiumPluginInterface )
 
   public:
@@ -36,6 +36,9 @@ class DummyPlugin : public QObject, Ra::Plugins::RadiumPluginInterface
 
     bool doAddMenu() override;
     QMenu* getMenu() override;
+
+    bool doAddAction( int& nb ) override;
+    QAction* getAction( int id ) override;
 
   private slots:
     void sayHello();

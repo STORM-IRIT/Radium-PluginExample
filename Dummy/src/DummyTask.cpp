@@ -2,7 +2,11 @@
 
 #include <mutex>
 
+#include <Core/Utils/Log.hpp>
+
 #include "DummySystem.hpp"
+
+using namespace Ra::Core::Utils;
 
 namespace {
 std::mutex ioMutex;
@@ -13,9 +17,8 @@ std::string DummyTask::getName() const {
     return "DummyTask";
 }
 
-void DummyTask::init( const Ra::Core::TaskParams* p ) {
-    auto params = static_cast<const DummyParams*>( p );
-    m_data      = params->data;
+void DummyTask::init( const DummyParams* p ) {
+    m_data = p->data;
 }
 
 void DummyTask::process() {
@@ -40,9 +43,8 @@ std::string DummyOtherTask::getName() const {
     return "DummyOtherTask";
 }
 
-void DummyOtherTask::init( const Ra::Core::TaskParams* p ) {
-    auto params = static_cast<const DummyParams*>( p );
-    m_data      = params->data;
+void DummyOtherTask::init( const DummyParams* p ) {
+    m_data = p->data;
 }
 
 void DummyOtherTask::process() {

@@ -8,7 +8,6 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
-#include <Core/Log/Log.hpp>
 #include <Engine/RadiumEngine.hpp>
 
 #include "DummySystem.hpp"
@@ -17,9 +16,9 @@ namespace DummyPlugin {
 
 DummyPlugin::~DummyPlugin() {}
 
-void DummyPlugin::registerPlugin( const Ra::PluginContext& context ) {
+void DummyPlugin::registerPlugin( const Ra::Plugins::Context& context ) {
     DummySystem* system = new DummySystem;
-    context->registerSystem( "DummySystem", system );
+    context.m_engine->registerSystem( "DummySystem", system );
 }
 
 bool DummyPlugin::doAddWidget( QString& name ) {
@@ -57,6 +56,14 @@ QMenu* DummyPlugin::getMenu() {
     CORE_UNUSED( a2 );
 
     return menu;
+}
+
+bool DummyPlugin::doAddAction( int& /*nb*/ ) {
+    return false;
+}
+
+QAction* DummyPlugin::getAction( int /*id*/ ) {
+    return nullptr;
 }
 
 void DummyPlugin::sayHello() {

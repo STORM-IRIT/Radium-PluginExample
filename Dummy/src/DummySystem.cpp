@@ -14,31 +14,22 @@ namespace DummyPlugin {
 
 DummySystem::DummySystem() : Ra::Engine::System() {
     m_data = new DummyData;
+    m_data->foo = 42;
+    m_data->bar = 1337;
 }
 
 DummySystem::~DummySystem() {
     delete m_data;
 }
 
-void DummySystem::initialize() {
-    m_data->foo = 42;
-    m_data->bar = 1337;
-}
-
-void DummySystem::handleDataLoading( Ra::Engine::Entity* entity,
-                                     const std::string& rootFolder,
-                                     const std::map<std::string, Ra::Core::Any>& data ) {}
-
-Ra::Engine::Component* DummySystem::addComponentToEntityInternal( Ra::Engine::Entity* entity,
-                                                                  uint id ) {
-    std::string componentName = "DummyComponent_" + entity->getName() + std::to_string( id );
-    DummyComponent* component = new DummyComponent( componentName );
-
-    return component;
+void DummySystem::handleAssetLoading( Ra::Engine::Entity *entity, const Ra::Core::Asset::FileData *data ) {
+    std::string componentName = "DummyComponent_" + entity->getName();
+    DummyComponent* component = new DummyComponent( componentName, entity );
+    registerComponent( entity, component );
 }
 
 void DummySystem::generateTasks( Ra::Core::TaskQueue* taskQueue,
-                                 const Ra::Engine::FrameInfo& frameInfo ) {
+                                 const Ra::Engine::FrameInfo& /*frameInfo*/ ) {
     DummyTask* task1      = new DummyTask;
     DummyOtherTask* task2 = new DummyOtherTask;
 
