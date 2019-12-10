@@ -122,7 +122,7 @@ void MeshPaintComponent::bakePaintToDiffuse() {
     // auto triangleMesh = compMess->get<Ra::Core::Geometry::TriangleMesh>( getEntity(),
     // m_dataId ); however here we skip the search in the component map
     Ra::Core::Geometry::TriangleMesh& triangleMesh = m_mesh->getCoreGeometry();
-    m_baseColors       = triangleMesh.getAttrib( m_currentColorAttribHdl ).data();
+    m_baseColors = triangleMesh.getAttrib( m_currentColorAttribHdl ).data();
     m_isBaseColorValid = true;
 }
 
@@ -156,7 +156,7 @@ void MeshPaintComponent::paintMesh( const Ra::Engine::Renderer::PickingResult& p
     // auto triangleMesh = compMess->get<Ra::Core::Geometry::TriangleMesh>( getEntity(),
     // m_dataId ); however here we skip the search in the component map
 
-    const auto& T = m_mesh->getCoreGeometry().m_indices;
+    const auto& t = m_mesh->getCoreGeometry().m_indices;
     ON_DEBUG( auto colAttrib =
                   m_mesh->getCoreGeometry().getAttribHandle<Ra::Core::Vector4>( colAttribName ) );
     CORE_ASSERT( colAttrib == m_currentColorAttribHdl, "Inconsistent AttribHandle used" );
@@ -172,31 +172,31 @@ void MeshPaintComponent::paintMesh( const Ra::Engine::Renderer::PickingResult& p
     {
         if ( pickingRenderMode == Ra::Engine::Displayable::PKM_POINTS )
         {
-            for ( auto t : picking.m_elementIdx )
+            for ( auto e : picking.m_elementIdx )
             {
-                colorContainer[size_t( t )] = color;
+                colorContainer[size_t( e )] = color;
             }
         }
         else
         {
-            for ( size_t t = 0; t < picking.m_elementIdx.size(); ++t )
+            for ( size_t e = 0; e < picking.m_elementIdx.size(); ++e )
             {
-                size_t v          = T[size_t( picking.m_elementIdx[t] )]( picking.m_vertexIdx[t] );
+                size_t v          = t[size_t( picking.m_elementIdx[e] )]( picking.m_vertexIdx[e] );
                 colorContainer[v] = color;
             }
         }
-
+        m_mesh->setDirty( Mesh::VERTEX_COLOR );
         break;
     }
     case Ra::Engine::Renderer::EDGE:
         [[fallthrough]];
     case Ra::Engine::Renderer::C_EDGE:
     {
-        for ( size_t t = 0; t < picking.m_elementIdx.size(); ++t )
+        for ( size_t e = 0; e < picking.m_elementIdx.size(); ++e )
         {
-            const auto& el     = T[size_t( picking.m_elementIdx[t] )];
-            size_t v1          = el( ( picking.m_edgeIdx[t] + 1 ) % 3 );
-            size_t v2          = el( ( picking.m_edgeIdx[t] + 2 ) % 3 );
+            const auto& elt    = t[size_t( picking.m_elementIdx[e] )];
+            size_t v1          = elt( ( picking.m_edgeIdx[e] + 1 ) % 3 );
+            size_t v2          = elt( ( picking.m_edgeIdx[e] + 2 ) % 3 );
             colorContainer[v1] = colorContainer[v2] = color;
         }
 
@@ -206,12 +206,12 @@ void MeshPaintComponent::paintMesh( const Ra::Engine::Renderer::PickingResult& p
         [[fallthrough]];
     case Ra::Engine::Renderer::C_TRIANGLE:
     {
-        for ( size_t t = 0; t < picking.m_elementIdx.size(); ++t )
+        for ( size_t e = 0; e < picking.m_elementIdx.size(); ++e )
         {
-            const auto& el     = T[size_t( picking.m_elementIdx[t] )];
-            size_t v1          = el( 0 );
-            size_t v2          = el( 1 );
-            size_t v3          = el( 2 );
+            const auto& elt    = t[size_t( picking.m_elementIdx[e] )];
+            size_t v1          = elt( 0 );
+            size_t v2          = elt( 1 );
+            size_t v3          = elt( 2 );
             colorContainer[v1] = colorContainer[v2] = colorContainer[v3] = color;
         }
 

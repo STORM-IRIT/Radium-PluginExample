@@ -26,8 +26,8 @@ class MeshFeatureTrackingComponent : public Ra::Engine::Component
 
     void setData( const Ra::Engine::Renderer::PickingResult& data );
 
-    void setVertexIdx( int idx );
-    void setTriangleIdx( int idx );
+    void setVertexIdx( uint idx );
+    void setTriangleIdx( uint idx );
 
     void update();
 

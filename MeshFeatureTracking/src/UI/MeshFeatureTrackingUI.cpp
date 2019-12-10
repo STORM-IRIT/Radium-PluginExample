@@ -36,12 +36,12 @@ void MeshFeatureTrackingUI::updateTracking( const FeatureData& data,
         ui->m_vertexIdx->blockSignals( true );
         ui->m_vertexIdx->setValue( data.m_data[0] );
         ui->m_vertexIdx->blockSignals( false );
-        ui->m_vertexPX->setText( QString::number( pos[0] ) );
-        ui->m_vertexPY->setText( QString::number( pos[1] ) );
-        ui->m_vertexPZ->setText( QString::number( pos[2] ) );
-        ui->m_vertexNX->setText( QString::number( vec[0] ) );
-        ui->m_vertexNY->setText( QString::number( vec[1] ) );
-        ui->m_vertexNZ->setText( QString::number( vec[2] ) );
+        ui->m_vertexPX->setText( QString::number( double( pos[0] ) ) );
+        ui->m_vertexPY->setText( QString::number( double( pos[1] ) ) );
+        ui->m_vertexPZ->setText( QString::number( double( pos[2] ) ) );
+        ui->m_vertexNX->setText( QString::number( double( vec[0] ) ) );
+        ui->m_vertexNY->setText( QString::number( double( vec[1] ) ) );
+        ui->m_vertexNZ->setText( QString::number( double( vec[2] ) ) );
         break;
     }
     case Ra::Engine::Renderer::EDGE:

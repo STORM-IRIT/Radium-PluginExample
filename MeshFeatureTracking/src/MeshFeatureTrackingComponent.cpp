@@ -76,7 +76,7 @@ namespace { // anonymous namespace for line mesh indices retrieval from triangle
             // the render mode
 // returns the triangles where the vertices can be found, along with the corresponding vertex
 // indices within them.
-void getPos_L2T( int l, int& v0, int& v1, int& t0, int& t1 ) {
+void getPos_L2T( uint l, uint& v0, uint& v1, uint& t0, uint& t1 ) {
     v0 = 0;
     v1 = 1;
     t0 = l / 3 * 2;
@@ -95,7 +95,7 @@ void getPos_L2T( int l, int& v0, int& v1, int& t0, int& t1 ) {
         ++t1;
     }
 }
-void getPos_L2T_strip( int l, int& v0, int& v1, int& t0, int& t1 ) {
+void getPos_L2T_strip( uint l, uint& v0, uint& v1, uint& t0, uint& t1 ) {
     v0 = 0;
     v1 = 1;
     t0 = l / 3;
@@ -112,7 +112,7 @@ void getPos_L2T_strip( int l, int& v0, int& v1, int& t0, int& t1 ) {
         ++t1;
     }
 }
-void getPos_L2T_adjacency( int l, int& v0, int& v1, int& t0, int& t1 ) {
+void getPos_L2T_adjacency( uint l, uint& v0, uint& v1, uint& t0, uint& t1 ) {
     v0 = 1;
     v1 = 2;
     t0 = ( l * 4 ) / 3;
@@ -131,7 +131,7 @@ void getPos_L2T_adjacency( int l, int& v0, int& v1, int& t0, int& t1 ) {
         ++t1;
     }
 }
-void getPos_L2T_strip_adjacency( int l, int& v0, int& v1, int& t0, int& t1 ) {
+void getPos_L2T_strip_adjacency( uint l, uint& v0, uint& v1, uint& t0, uint& t1 ) {
     v0 = 0;
     v1 = 1;
     t0 = ( l + 1 ) / 3;
@@ -149,7 +149,7 @@ void getPos_L2T_strip_adjacency( int l, int& v0, int& v1, int& t0, int& t1 ) {
     }
 }
 
-void getPos_TS2T( int ts, int& v0, int& v1, int& v2, int& t0, int& t1, int& t2 ) {
+void getPos_TS2T( uint ts, uint& v0, uint& v1, uint& v2, uint& t0, uint& t1, uint& t2 ) {
     v0 = 0;
     v1 = 1;
     v2 = 2;
@@ -174,7 +174,7 @@ void getPos_TS2T( int ts, int& v0, int& v1, int& v2, int& t0, int& t1, int& t2 )
 }
 
 // for fans, first triangle vertex is always triangle[0](0)
-void getPos_TF2T( int tf, int& v1, int& v2, int& t1, int& t2 ) {
+void getPos_TF2T( uint tf, uint& v1, uint& v2, uint& t1, uint& t2 ) {
     v1 = 0;
     v2 = 1;
     t1 = ( tf + 1 ) / 3;
@@ -235,17 +235,18 @@ void MeshFeatureTrackingComponent::setData( const Ra::Engine::Renderer::PickingR
         return;
     }
     // fill data accordingly
+    uint element = uint( data.m_elementIdx[0] );
     if ( rm == MeshRenderMode::RM_POINTS )
     {
-        m_data.m_data[0] = data.m_elementIdx[0];
+        m_data.m_data[0] = int( element );
         return;
     }
     // if lines, retrieve triangle-based indices
+    const auto& t = m_pickedMesh->getCoreGeometry().m_indices;
     if ( rm == MeshRenderMode::RM_LINES )
     {
-        int v0, v1, t0, t1;
-        getPos_L2T( data.m_elementIdx[0], v0, v1, t0, t1 );
-        const auto& t = m_pickedMesh->getCoreGeometry().m_indices;
+        uint v0, v1, t0, t1;
+        getPos_L2T( element, v0, v1, t0, t1 );
         if ( m_data.m_mode == PickingMode::VERTEX )
         {
             m_data.m_data[0] = data.m_vertexIdx[0] == 0 ? t[t0]( v0 ) : t[t1]( v1 );
@@ -260,9 +261,8 @@ void MeshFeatureTrackingComponent::setData( const Ra::Engine::Renderer::PickingR
     }
     if ( rm == MeshRenderMode::RM_LINE_LOOP || rm == MeshRenderMode::RM_LINE_STRIP )
     {
-        int v0, v1, t0, t1;
-        getPos_L2T_strip( data.m_elementIdx[0], v0, v1, t0, t1 );
-        const auto& t = m_pickedMesh->getCoreGeometry().m_indices;
+        uint v0, v1, t0, t1;
+        getPos_L2T_strip( element, v0, v1, t0, t1 );
         if ( m_data.m_mode == PickingMode::VERTEX )
         {
             m_data.m_data[0] = data.m_vertexIdx[0] == 0 ? t[t0]( v0 ) : t[t1]( v1 );
@@ -277,9 +277,8 @@ void MeshFeatureTrackingComponent::setData( const Ra::Engine::Renderer::PickingR
     }
     if ( rm == MeshRenderMode::RM_LINES_ADJACENCY )
     {
-        int v0, v1, t0, t1;
-        getPos_L2T_adjacency( data.m_elementIdx[0], v0, v1, t0, t1 );
-        const auto& t = m_pickedMesh->getCoreGeometry().m_indices;
+        uint v0, v1, t0, t1;
+        getPos_L2T_adjacency( element, v0, v1, t0, t1 );
         if ( m_data.m_mode == PickingMode::VERTEX )
         {
             m_data.m_data[0] = data.m_vertexIdx[0] == 0 ? t[t0]( v0 ) : t[t1]( v1 );
@@ -294,9 +293,8 @@ void MeshFeatureTrackingComponent::setData( const Ra::Engine::Renderer::PickingR
     }
     if ( rm == MeshRenderMode::RM_LINE_STRIP_ADJACENCY )
     {
-        int v0, v1, t0, t1;
-        getPos_L2T_strip_adjacency( data.m_elementIdx[0], v0, v1, t0, t1 );
-        const auto& t = m_pickedMesh->getCoreGeometry().m_indices;
+        uint v0, v1, t0, t1;
+        getPos_L2T_strip_adjacency( element, v0, v1, t0, t1 );
         if ( m_data.m_mode == PickingMode::VERTEX )
         {
             m_data.m_data[0] = data.m_vertexIdx[0] == 0 ? t[t0]( v0 ) : t[t1]( v1 );
@@ -311,32 +309,28 @@ void MeshFeatureTrackingComponent::setData( const Ra::Engine::Renderer::PickingR
     }
     if ( rm == MeshRenderMode::RM_TRIANGLES && m_data.m_mode == PickingMode::VERTEX )
     {
-        const auto& T    = m_pickedMesh->getCoreGeometry().m_indices[data.m_elementIdx[0]];
-        m_data.m_data[0] = T( data.m_vertexIdx[0] );
-        m_data.m_data[1] = T( ( data.m_vertexIdx[0] + 1 ) % 3 );
+        m_data.m_data[0] = t[element]( data.m_vertexIdx[0] );
+        m_data.m_data[1] = t[element]( ( data.m_vertexIdx[0] + 1 ) % 3 );
         return;
     }
     if ( rm == MeshRenderMode::RM_TRIANGLES && m_data.m_mode == PickingMode::EDGE )
     {
-        const auto& T    = m_pickedMesh->getCoreGeometry().m_indices[data.m_elementIdx[0]];
-        m_data.m_data[0] = T( ( data.m_edgeIdx[0] + 1 ) % 3 );
-        m_data.m_data[1] = T( ( data.m_edgeIdx[0] + 2 ) % 3 );
+        m_data.m_data[0] = t[element]( ( data.m_edgeIdx[0] + 1 ) % 3 );
+        m_data.m_data[1] = t[element]( ( data.m_edgeIdx[0] + 2 ) % 3 );
         return;
     }
     if ( rm == MeshRenderMode::RM_TRIANGLES )
     {
-        const auto& T    = m_pickedMesh->getCoreGeometry().m_indices[data.m_elementIdx[0]];
-        m_data.m_data[0] = T( 0 );
-        m_data.m_data[1] = T( 1 );
-        m_data.m_data[2] = T( 2 );
+        m_data.m_data[0] = t[element]( 0 );
+        m_data.m_data[1] = t[element]( 1 );
+        m_data.m_data[2] = t[element]( 2 );
         m_data.m_data[3] = data.m_elementIdx[0];
         return;
     }
     if ( rm == MeshRenderMode::RM_TRIANGLE_STRIP && m_data.m_mode == PickingMode::VERTEX )
     {
-        int v0, v1, v2, t0, t1, t2;
-        getPos_TS2T( data.m_elementIdx[0], v0, v1, v2, t0, t1, t2 );
-        const auto& t    = m_pickedMesh->getCoreGeometry().m_indices;
+        uint v0, v1, v2, t0, t1, t2;
+        getPos_TS2T( element, v0, v1, v2, t0, t1, t2 );
         m_data.m_data[0] = data.m_vertexIdx[0] == 0
                                ? t[t0]( v0 )
                                : ( data.m_vertexIdx[0] == 1 ? t[t1]( v1 ) : t[t2]( v2 ) );
@@ -345,29 +339,26 @@ void MeshFeatureTrackingComponent::setData( const Ra::Engine::Renderer::PickingR
     }
     if ( rm == MeshRenderMode::RM_TRIANGLE_STRIP && m_data.m_mode == PickingMode::EDGE )
     {
-        int v0, v1, v2, t0, t1, t2;
-        getPos_TS2T( data.m_elementIdx[0], v0, v1, v2, t0, t1, t2 );
-        const auto& t    = m_pickedMesh->getCoreGeometry().m_indices;
+        uint v0, v1, v2, t0, t1, t2;
+        getPos_TS2T( element, v0, v1, v2, t0, t1, t2 );
         m_data.m_data[0] = data.m_edgeIdx[0] == 0 ? t[t1]( v1 ) : t[t0]( v0 );
         m_data.m_data[1] = data.m_edgeIdx[0] == 2 ? t[t1]( v1 ) : t[t2]( v2 );
         return;
     }
     if ( rm == MeshRenderMode::RM_TRIANGLE_STRIP )
     {
-        int v0, v1, v2, t0, t1, t2;
-        getPos_TS2T( data.m_elementIdx[0], v0, v1, v2, t0, t1, t2 );
-        const auto& t    = m_pickedMesh->getCoreGeometry().m_indices;
+        uint v0, v1, v2, t0, t1, t2;
+        getPos_TS2T( element, v0, v1, v2, t0, t1, t2 );
         m_data.m_data[0] = t[t0]( v0 );
         m_data.m_data[1] = t[t1]( v1 );
         m_data.m_data[2] = t[t2]( v2 );
-        m_data.m_data[3] = data.m_elementIdx[0];
+        m_data.m_data[3] = element;
         return;
     }
     if ( rm == MeshRenderMode::RM_TRIANGLE_FAN && m_data.m_mode == PickingMode::VERTEX )
     {
-        int v1, v2, t1, t2;
-        getPos_TF2T( data.m_elementIdx[0], v1, v2, t1, t2 );
-        const auto& t    = m_pickedMesh->getCoreGeometry().m_indices;
+        uint v1, v2, t1, t2;
+        getPos_TF2T( element, v1, v2, t1, t2 );
         m_data.m_data[0] = data.m_vertexIdx[0] == 0
                                ? t[0]( 0 )
                                : ( data.m_vertexIdx[0] == 1 ? t[t1]( v1 ) : t[t2]( v2 ) );
@@ -376,27 +367,25 @@ void MeshFeatureTrackingComponent::setData( const Ra::Engine::Renderer::PickingR
     }
     if ( rm == MeshRenderMode::RM_TRIANGLE_FAN && m_data.m_mode == PickingMode::EDGE )
     {
-        int v1, v2, t1, t2;
-        getPos_TF2T( data.m_elementIdx[0], v1, v2, t1, t2 );
-        const auto& t    = m_pickedMesh->getCoreGeometry().m_indices;
+        uint v1, v2, t1, t2;
+        getPos_TF2T( element, v1, v2, t1, t2 );
         m_data.m_data[0] = data.m_edgeIdx[0] == 0 ? t[t1]( v1 ) : t[0]( 0 );
         m_data.m_data[1] = data.m_edgeIdx[0] == 2 ? t[t1]( v1 ) : t[t2]( v2 );
         return;
     }
     if ( rm == MeshRenderMode::RM_TRIANGLE_FAN )
     {
-        int v1, v2, t1, t2;
-        getPos_TF2T( data.m_elementIdx[0], v1, v2, t1, t2 );
-        const auto& t    = m_pickedMesh->getCoreGeometry().m_indices;
+        uint v1, v2, t1, t2;
+        getPos_TF2T( element, v1, v2, t1, t2 );
         m_data.m_data[0] = t[0]( 0 );
         m_data.m_data[1] = t[t1]( v1 );
         m_data.m_data[2] = t[t2]( v2 );
-        m_data.m_data[3] = data.m_elementIdx[0];
+        m_data.m_data[3] = element;
         return;
     }
 }
 
-void MeshFeatureTrackingComponent::setVertexIdx( int idx ) {
+void MeshFeatureTrackingComponent::setVertexIdx( uint idx ) {
     if ( !getRoMgr()->exists( m_pickedRoIdx ) ) { return; }
     CORE_ASSERT( m_pickedMesh != nullptr, "m_pickedRoIdx and m_pickedMesh are inconsistent" );
 
@@ -404,154 +393,152 @@ void MeshFeatureTrackingComponent::setVertexIdx( int idx ) {
     // also need to change second for feature Scale
     const auto rm = m_pickedMesh->getRenderMode();
     if ( rm == MeshRenderMode::RM_POINTS ) { return; }
-    const auto& t = m_pickedMesh->getCoreGeometry().m_indices;
+    const auto& triangles = m_pickedMesh->getCoreGeometry().m_indices;
     if ( rm == MeshRenderMode::RM_LINES )
     {
-        for ( uint i = 0; i < t.size(); ++i )
+        for ( uint i = 0; i < triangles.size(); ++i )
         {
-            const auto& T = t[i];
-            if ( T( 0 ) == idx )
+            const auto& t = triangles[i];
+            if ( t( 0 ) == idx )
             {
-                m_data.m_data[1] = ( i % 2 == 0 ? T( 1 ) : t[i - 1]( 2 ) );
+                m_data.m_data[1] = ( i % 2 == 0 ? t( 1 ) : triangles[i - 1]( 2 ) );
                 return;
             }
-            if ( T( 1 ) == idx )
+            if ( t( 1 ) == idx )
             {
-                m_data.m_data[1] = ( i % 2 == 0 ? T( 0 ) : T( 2 ) );
+                m_data.m_data[1] = ( i % 2 == 0 ? t( 0 ) : t( 2 ) );
                 return;
             }
-            if ( T( 2 ) == idx )
+            if ( t( 2 ) == idx )
             {
-                m_data.m_data[1] = ( i % 2 == 0 ? t[i + 1]( 0 ) : T( 1 ) );
+                m_data.m_data[1] = ( i % 2 == 0 ? triangles[i + 1]( 0 ) : t( 1 ) );
                 return;
             }
         }
     }
     if ( rm == MeshRenderMode::RM_LINE_LOOP || rm == MeshRenderMode::RM_LINE_STRIP )
     {
-        for ( uint i = 0; i < t.size(); ++i )
+        for ( uint i = 0; i < triangles.size(); ++i )
         {
-            const auto& T = t[i];
-            if ( T( 0 ) == idx )
+            const auto& t = triangles[i];
+            if ( t( 0 ) == idx )
             {
-                m_data.m_data[1] = T( 1 );
+                m_data.m_data[1] = t( 1 );
                 return;
             }
-            if ( T( 1 ) == idx )
+            if ( t( 1 ) == idx )
             {
-                m_data.m_data[1] = T( 0 );
+                m_data.m_data[1] = t( 0 );
                 return;
             }
-            if ( T( 2 ) == idx )
+            if ( t( 2 ) == idx )
             {
-                m_data.m_data[1] = T( 1 );
+                m_data.m_data[1] = t( 1 );
                 return;
             }
         }
     }
     if ( rm == MeshRenderMode::RM_LINES_ADJACENCY )
     {
-        for ( uint i = 0; i < t.size(); ++i )
+        for ( uint i = 0; i < triangles.size(); ++i )
         {
-            const auto& T = t[i];
-            if ( T( 0 ) == idx && i % 4 > 1 )
+            const auto& t = triangles[i];
+            if ( t( 0 ) == idx && i % 4 > 1 )
             {
-                m_data.m_data[1] = ( i % 4 == 2 ? t[i - 1]( 2 ) : T( 1 ) );
+                m_data.m_data[1] = ( i % 4 == 2 ? triangles[i - 1]( 2 ) : t( 1 ) );
                 return;
             }
-            if ( T( 1 ) == idx && ( i + 3 ) % 4 > 1 )
+            if ( t( 1 ) == idx && ( i + 3 ) % 4 > 1 )
             {
-                m_data.m_data[1] = ( i % 4 == 0 ? T( 2 ) : T( 0 ) );
+                m_data.m_data[1] = ( i % 4 == 0 ? t( 2 ) : t( 0 ) );
                 return;
             }
-            if ( T( 2 ) == idx && i % 4 < 2 )
+            if ( t( 2 ) == idx && i % 4 < 2 )
             {
-                m_data.m_data[1] = ( i % 4 == 0 ? T( 1 ) : t[i + 1]( 0 ) );
+                m_data.m_data[1] = ( i % 4 == 0 ? t( 1 ) : triangles[i + 1]( 0 ) );
                 return;
             }
         }
     }
     if ( rm == MeshRenderMode::RM_LINE_STRIP_ADJACENCY )
     {
-        for ( uint i = 0; i < t.size(); ++i )
+        for ( uint i = 0; i < triangles.size(); ++i )
         {
-            const auto& T = t[i];
-            if ( T( 0 ) == idx && i != 0 )
+            const auto& t = triangles[i];
+            if ( t( 0 ) == idx && i != 0 )
             {
-                m_data.m_data[1] = T( 1 );
+                m_data.m_data[1] = t( 1 );
                 return;
             }
-            if ( T( 1 ) == idx && i != 0 )
+            if ( t( 1 ) == idx && i != 0 )
             {
-                m_data.m_data[1] = T( 0 );
+                m_data.m_data[1] = t( 0 );
                 return;
             }
-            if ( T( 2 ) == idx )
+            if ( t( 2 ) == idx )
             {
-                m_data.m_data[1] = T( 1 );
+                m_data.m_data[1] = t( 1 );
                 return;
             }
         }
     }
     if ( rm == MeshRenderMode::RM_TRIANGLES || rm == MeshRenderMode::RM_TRIANGLE_STRIP )
     {
-        for ( uint i = 0; i < t.size(); ++i )
+        for ( uint i = 0; i < triangles.size(); ++i )
         {
-            const auto& T = t[i];
-            if ( T( 0 ) == idx )
+            const auto& t = triangles[i];
+            if ( t( 0 ) == idx )
             {
-                m_data.m_data[1] = T( 1 );
+                m_data.m_data[1] = t( 1 );
                 return;
             }
-            if ( T( 1 ) == idx || T( 2 ) == idx )
+            if ( t( 1 ) == idx || t( 2 ) == idx )
             {
-                m_data.m_data[1] = T( 0 );
+                m_data.m_data[1] = t( 0 );
                 return;
             }
         }
     }
     if ( rm == MeshRenderMode::RM_TRIANGLE_FAN )
     {
-        m_data.m_data[1] = ( idx == 0 ? t[0]( 1 ) : 0 );
+        m_data.m_data[1] = ( idx == 0 ? triangles[0]( 1 ) : 0 );
         return;
     }
 }
 
-void MeshFeatureTrackingComponent::setTriangleIdx( int idx ) {
+void MeshFeatureTrackingComponent::setTriangleIdx( uint idx ) {
     if ( !getRoMgr()->exists( m_pickedRoIdx ) ) { return; }
     CORE_ASSERT( m_pickedMesh != nullptr, "m_pickedRoIdx and m_pickedMesh are inconsistent" );
 
     // also need to change all for feature Scale, Position and Vector
     const auto rm = m_pickedMesh->getRenderMode();
-    const auto& t = m_pickedMesh->getCoreGeometry().m_indices;
+    const auto& triangles = m_pickedMesh->getCoreGeometry().m_indices;
     if ( rm == MeshRenderMode::RM_TRIANGLES )
     {
-        const auto& T    = t[idx];
-        m_data.m_data[0] = T( 0 );
-        m_data.m_data[1] = T( 1 );
-        m_data.m_data[2] = T( 2 );
+        const auto& t    = triangles[idx];
+        m_data.m_data[0] = t( 0 );
+        m_data.m_data[1] = t( 1 );
+        m_data.m_data[2] = t( 2 );
         m_data.m_data[3] = idx;
         return;
     }
     if ( rm == MeshRenderMode::RM_TRIANGLE_STRIP )
     {
-        int v0, v1, v2, t0, t1, t2;
+        uint v0, v1, v2, t0, t1, t2;
         getPos_TS2T( idx, v0, v1, v2, t0, t1, t2 );
-        const auto& t    = m_pickedMesh->getCoreGeometry().m_indices;
-        m_data.m_data[0] = t[t0]( v0 );
-        m_data.m_data[1] = t[t1]( v1 );
-        m_data.m_data[2] = t[t2]( v2 );
+        m_data.m_data[0] = triangles[t0]( v0 );
+        m_data.m_data[1] = triangles[t1]( v1 );
+        m_data.m_data[2] = triangles[t2]( v2 );
         m_data.m_data[3] = idx;
         return;
     }
     if ( rm == MeshRenderMode::RM_TRIANGLE_FAN )
     {
-        int v1, v2, t1, t2;
+        uint v1, v2, t1, t2;
         getPos_TF2T( idx, v1, v2, t1, t2 );
-        const auto& t    = m_pickedMesh->getCoreGeometry().m_indices;
-        m_data.m_data[0] = t[0]( 0 );
-        m_data.m_data[1] = t[t1]( v1 );
-        m_data.m_data[2] = t[t2]( v2 );
+        m_data.m_data[0] = triangles[0]( 0 );
+        m_data.m_data[1] = triangles[t1]( v1 );
+        m_data.m_data[2] = triangles[t2]( v2 );
         m_data.m_data[3] = idx;
         return;
     }
@@ -587,41 +574,38 @@ Scalar MeshFeatureTrackingComponent::getFeatureScale() const {
     auto ro = getRoMgr()->getRenderObject( m_pickedRoIdx );
     if ( m_pickedMesh->getRenderMode() == MeshRenderMode::RM_POINTS )
     { return ro->computeAabb().sizes().norm() * POINT_SCALE_FACTOR; }
+    const auto& T = ro->getTransform().linear();
     const auto& v = m_pickedMesh->getCoreGeometry().vertices();
     switch ( m_data.m_mode )
     {
     case PickingMode::VERTEX:
     {
         // return 1 fourth of the edge length of the first edge we can find with the vertex
-        const Ra::Core::Vector3& v0 = v[m_data.m_data[0]];
-        const Ra::Core::Vector3& v1 = v[m_data.m_data[1]];
-        return ( v1 - v0 ).norm() / 4_ra;
+        return ( T * ( v[m_data.m_data[1]] - v[m_data.m_data[0]] ) ).norm() / 4_ra;;
     }
     case PickingMode::EDGE:
     {
         // return 1 fourth of the edge length
-        const Ra::Core::Vector3& v0 = v[m_data.m_data[0]];
-        const Ra::Core::Vector3& v1 = v[m_data.m_data[1]];
-        return ( v1 - v0 ).norm() / 4_ra;
+        return ( T * ( v[m_data.m_data[1]] - v[m_data.m_data[0]] ) ).norm() / 4_ra;
     }
     case PickingMode::TRIANGLE:
     {
         // return half the smallest distance from C to an edge
-        const Ra::Core::Vector3& v0 = v[m_data.m_data[0]];
-        const Ra::Core::Vector3& v1 = v[m_data.m_data[1]];
-        const Ra::Core::Vector3& v2 = v[m_data.m_data[2]];
-        const Ra::Core::Vector3 C   = ( v0 + v1 + v2 ) / 3_ra;
-        const Ra::Core::Vector3 C0  = C - v0;
-        const Ra::Core::Vector3 C1  = C - v1;
-        const Ra::Core::Vector3 C2  = C - v2;
+        const Ra::Core::Vector3& V0 = v[m_data.m_data[0]];
+        const Ra::Core::Vector3& V1 = v[m_data.m_data[1]];
+        const Ra::Core::Vector3& V2 = v[m_data.m_data[2]];
+        const Ra::Core::Vector3 C   = ( V0 + V1 + V2 ) / 3_ra;
+        const Ra::Core::Vector3 C0  = C - V0;
+        const Ra::Core::Vector3 C1  = C - V1;
+        const Ra::Core::Vector3 C2  = C - V2;
         return sqrt( std::min(
                    std::min( C0.squaredNorm() *
-                                 ( v1 - v0 ).normalized().cross( C0.normalized() ).squaredNorm(),
+                                 ( V1 - V0 ).normalized().cross( C0.normalized() ).squaredNorm(),
                              C1.squaredNorm() *
-                                 ( v2 - v1 ).normalized().cross( C1.normalized() ).squaredNorm() ),
+                                 ( V2 - V1 ).normalized().cross( C1.normalized() ).squaredNorm() ),
                    C2.squaredNorm() *
-                       ( v0 - v2 ).normalized().cross( C2.normalized() ).squaredNorm() ) ) /
-               2.0;
+                       ( V0 - V2 ).normalized().cross( C2.normalized() ).squaredNorm() ) ) /
+               2_ra;
     }
     default:
         return 1_ra;
