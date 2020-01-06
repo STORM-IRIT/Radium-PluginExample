@@ -65,7 +65,7 @@ void MySystem::compute( Param p ) {
     {
         LOG( logINFO ) << "Example Plugin System: processing starts...";
 
-        TopologicalMesh topologicalMesh( mesh->getTriangleMesh() );
+        TopologicalMesh topologicalMesh( mesh->getCoreGeometry() );
 
         OpenMesh::VPropHandleT<Scalar> vertex_weights_;
         topologicalMesh.add_property( vertex_weights_ );
