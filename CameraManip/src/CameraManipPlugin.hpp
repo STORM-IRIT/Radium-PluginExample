@@ -1,6 +1,8 @@
 #ifndef CAMERAMANIPPLUGIN_HPP_
 #define CAMERAMANIPPLUGIN_HPP_
 
+#include <Core/Animation/KeyFramedValue.hpp>
+
 #include <Core/CoreMacros.hpp>
 #include <PluginBase/RadiumPluginInterface.hpp>
 #include <QObject>
@@ -30,7 +32,7 @@ class CameraManipPluginC : public QObject, Ra::Plugins::RadiumPluginInterface
 
   public:
     CameraManipPluginC();
-    ~CameraManipPluginC();
+    ~CameraManipPluginC() override;
 
     void registerPlugin( const Ra::Plugins::Context& context ) override;
 
@@ -47,6 +49,7 @@ class CameraManipPluginC : public QObject, Ra::Plugins::RadiumPluginInterface
     void useSelectedCamera();
     void saveCamera();
     void createCamera();
+    void keyFrameCamera( bool on );
     void onCurrentChanged( const QModelIndex& current, const QModelIndex& prev );
 
   signals:
@@ -57,7 +60,12 @@ class CameraManipPluginC : public QObject, Ra::Plugins::RadiumPluginInterface
 
     Ra::Engine::RadiumEngine* m_engine;
     Ra::GuiBase::SelectionManager* m_selectionManager;
+    Ra::GuiBase::Timeline* m_timeline;
     Ra::Gui::Viewer* m_viewer;
+
+    using CameraPath = Ra::Core::Animation::KeyFramedValue<Ra::Core::Transform>;
+    std::map<Ra::Engine::Camera*, std::pair<CameraPath*, Ra::Core::Transform>> m_cameraPaths;
+    Scalar m_currentTime;
 };
 
 } // namespace CameraManipPlugin

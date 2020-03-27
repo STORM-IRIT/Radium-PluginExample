@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>320</width>
+    <width>328</width>
     <height>95</height>
    </rect>
   </property>
@@ -51,6 +51,20 @@
         <widget class="QPushButton" name="m_saveCamera">
          <property name="text">
           <string>Save Camera</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QCheckBox" name="m_keyFrameCamera">
+         <property name="text">
+          <string>KeyFrame Camera</string>
          </property>
         </widget>
        </item>

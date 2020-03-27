@@ -23,8 +23,8 @@ class CameraManipUI : public QFrame {
     friend class CameraManipPlugin::CameraManipPluginC;
 
   public:
-    explicit CameraManipUI( QWidget* parent = 0 );
-    ~CameraManipUI();
+    explicit CameraManipUI( QWidget* parent = nullptr );
+    ~CameraManipUI() override;
 
   public:
     Ui::CameraManipUI* ui;
