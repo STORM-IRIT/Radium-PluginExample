@@ -16,7 +16,7 @@ static const std::string materialName{"FakeToon"};
 FakeToonMaterial::FakeToonMaterial( const std::string& instanceName ) :
     Ra::Engine::Material( instanceName, materialName ) {}
 
-void FakeToonMaterial::bind( const Ra::Engine::ShaderProgram* shader ) {
+void FakeToonMaterial::updateGL() {
     if ( !m_isDirty ) { return; }
 
     using namespace Ra::Core::Utils;
@@ -25,10 +25,10 @@ void FakeToonMaterial::bind( const Ra::Engine::ShaderProgram* shader ) {
     Scalar m_ns( 1.0 );
     Scalar m_alpha( 1.0 );
 
-    shader->setUniform( "material.kd", m_kd );
-    shader->setUniform( "material.ks", m_ks );
-    shader->setUniform( "material.ns", m_ns );
-    shader->setUniform( "material.alpha", m_alpha );
+    m_renderParameters.addParameter( "material.kd", m_kd );
+    m_renderParameters.addParameter( "material.ks", m_ks );
+    m_renderParameters.addParameter( "material.ns", m_ns );
+    m_renderParameters.addParameter( "material.alpha", m_alpha );
 
     m_isDirty = false;
 }
@@ -60,11 +60,11 @@ void FakeToonMaterial::registerMaterial() {
         "FakeToon", []( Ra::Engine::RenderTechnique& rt, bool /*isTransparent*/ ) {
             // Configuration for RenderTechnique::LIGHTING_OPAQUE (Mandatory)
             auto lpconfig = Ra::Engine::ShaderConfigurationFactory::getConfiguration( "FakeToon" );
-            rt.setConfiguration( lpconfig, Ra::Engine::RenderTechnique::LIGHTING_OPAQUE );
+            rt.setConfiguration( *lpconfig, Ra::Engine::DefaultRenderingPasses::LIGHTING_OPAQUE );
             // Configuration for RenderTechnique::Z_PREPASS
             auto dpconfig =
                 Ra::Engine::ShaderConfigurationFactory::getConfiguration( "DepthAmbiantFakeToon" );
-            rt.setConfiguration( dpconfig, Ra::Engine::RenderTechnique::Z_PREPASS );
+            rt.setConfiguration( *dpconfig, Ra::Engine::DefaultRenderingPasses::Z_PREPASS );
             // Configuration for RenderTechnique::LIGHTING_TRANSPARENT
         } );
 }
