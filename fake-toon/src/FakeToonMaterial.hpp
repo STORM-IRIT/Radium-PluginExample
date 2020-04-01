@@ -12,8 +12,7 @@ class FAKE_TOON_PLUGIN_EXAMPLE_API FakeToonMaterial final : public Ra::Engine::M
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
     explicit FakeToonMaterial( const std::string& instanceName );
 
-    void updateGL() override {}
-    void bind( const Ra::Engine::ShaderProgram* shader ) override;
+    void updateGL() override;
 
   private:
   public:

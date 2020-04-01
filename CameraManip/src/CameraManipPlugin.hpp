@@ -49,6 +49,9 @@ class CameraManipPluginC : public QObject, Ra::Plugins::RadiumPluginInterface
     void createCamera();
     void onCurrentChanged( const QModelIndex& current, const QModelIndex& prev );
 
+  signals:
+    void askForUpdate();
+
   private:
     CameraManipUI* m_widget;
 

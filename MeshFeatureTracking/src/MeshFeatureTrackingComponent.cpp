@@ -34,16 +34,16 @@ void MeshFeatureTrackingComponent::initialize() {
     std::shared_ptr<Ra::Engine::Mesh> display( new Ra::Engine::Mesh( "PickingManagerSphere" ) );
     display->loadGeometry( Ra::Core::Geometry::makeParametricSphere( 1_ra ) );
     std::shared_ptr<Ra::Engine::Material> material;
-    auto bpMaterial = new Ra::Engine::BlinnPhongMaterial( "PickingManageSphereMaterial" );
-    material.reset( bpMaterial );
+    auto bpMaterial  = new Ra::Engine::BlinnPhongMaterial( "PickingManageSphereMaterial" );
     bpMaterial->m_kd = Ra::Core::Utils::Color::Green();
+    material.reset( bpMaterial );
     m_RO             = Ra::Engine::RenderObject::createRenderObject(
         "FeaturePickingManagerSphereRO",
         this,
         Ra::Engine::RenderObjectType::Geometry,
         display,
-        Ra::Engine::RenderTechnique::createDefaultRenderTechnique(),
-        material );
+        Ra::Engine::RenderTechnique::createDefaultRenderTechnique() );
+    m_RO->setMaterial( material );
     m_RO->setPickable( false );
     m_RO->setVisible( false );
     addRenderObject( m_RO );

@@ -44,12 +44,8 @@ void MySystem::handleAssetLoading( Ra::Engine::Entity* entity,
 
                 if ( idx.isValid() && roMgr->exists( idx ) )
                 {
-                    auto rt = std::make_shared<Ra::Engine::RenderTechnique>();
-                    builder.second( *rt, false );
-                    rt->setMaterial( std::make_shared<FakeToonMaterial>( "FakeToon" ) );
-
                     auto ro = roMgr->getRenderObject( idx );
-                    ro->setRenderTechnique( rt );
+                    ro->setMaterial( std::make_shared<FakeToonMaterial>( "FakeToon" ) );
                 }
             }
             else

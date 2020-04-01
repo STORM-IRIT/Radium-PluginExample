@@ -39,6 +39,10 @@ void CameraManipPluginC::registerPlugin( const Ra::Plugins::Context& context ) {
              &Ra::GuiBase::SelectionManager::currentChanged,
              this,
              &CameraManipPluginC::onCurrentChanged );
+    connect( this,
+             &CameraManipPluginC::askForUpdate,
+             &context,
+             &Ra::Plugins::Context::askForUpdate );
 }
 
 bool CameraManipPluginC::doAddWidget( QString& name ) {
@@ -88,6 +92,7 @@ void CameraManipPluginC::useSelectedCamera() {
             Ra::Engine::Camera* camera = static_cast<Ra::Engine::Camera*>( ent.m_component );
             m_viewer->getCameraManipulator()->getCamera()->show(true );
             m_viewer->getCameraManipulator()->setCamera(camera );
+            askForUpdate();
         }
     }
 }
