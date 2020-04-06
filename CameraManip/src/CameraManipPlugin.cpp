@@ -92,7 +92,7 @@ void CameraManipPluginC::useSelectedCamera() {
             Ra::Engine::Camera* camera = static_cast<Ra::Engine::Camera*>( ent.m_component );
             m_viewer->getCameraManipulator()->getCamera()->show(true );
             m_viewer->getCameraManipulator()->setCamera(camera );
-            askForUpdate();
+            emit askForUpdate();
         }
     }
 }
