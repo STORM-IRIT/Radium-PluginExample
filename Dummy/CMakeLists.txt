@@ -62,7 +62,14 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
         ${Qt5_LIBRARIES}
         )
 
+
+set(ARGS "")
+if(INSTALL_IN_RADIUM_BUNDLE)
+    set(ARGS "INSTALL_IN_RADIUM_BUNDLE")
+endif(INSTALL_IN_RADIUM_BUNDLE)
+
 configure_radium_plugin(
-	NAME ${PROJECT_NAME}
-	RESOURCES ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shaders
+    NAME ${PROJECT_NAME}
+    RESOURCES ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shaders
+    "${ARGS}"
 )
