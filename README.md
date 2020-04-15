@@ -29,7 +29,6 @@ When configuring the examples, the cmake command takes the following options :
 -   `INSTALL_IN_RADIUM_BUNDLE`, Off by default.
 
 By default the install target installs the plugin into the directory `installed-<Compiler_id>` in the plugin buildtree. Optional cmake options `-DCMAKE_INSTALL_PREFIX=pathToInstallPlugins`  or `-DINSTALL_IN_RADIUM_BUNDLE=ON` can be provided to install the plugins and resources in specified directory or in the Radium-Engine installation directory. Plugins installed into the Radium-Engine installation directory are automatically loaded by compatible applications while other installation directory must explicitly be added to the plugin directories of the applications.
-More details [below](#configure-the-plugin)
 
 ## Description of the example plugins
 
