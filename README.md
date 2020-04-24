@@ -13,7 +13,6 @@ Six examples of plugins are provided in this project:
 -   LaplacianSmoothing: illustrates how to process a mesh using OpenMesh and Radium (using `Ra::Core::TopologicalMesh`). 
 
     The mesh is selected by the user using a combobox added into the plugins UI area in Radium Main-App.
-    
 -   FakeToonMaterial: illustrates how to add a new material in Radium. 
 
     All the models loaded in MainApplication when this plugin is enabled are assigned with a toon shader.
