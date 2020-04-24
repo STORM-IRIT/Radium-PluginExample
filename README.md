@@ -4,15 +4,28 @@ Radium is a research 3D Engine for rendering, animation and processing.
 It is developed and maintained by the [STORM research group](https://www.irit.fr/STORM/site/).
 
 This repository holds examples of Plugins based on Radium Libraries.
-To compile theses examples, you first need to compile the [Radium libraries](https://github.com/STORM-IRIT/Radium-Engine) and a plugin compatible application based on Radium, for instance [Main Application](https://github.com/STORM-IRIT/Radium-Apps).
+To compile theses examples, you first need to compile the 
+[Radium libraries](https://github.com/STORM-IRIT/Radium-Engine) and a plugin compatible application based on Radium, 
+for instance [Main Application](https://github.com/STORM-IRIT/Radium-Apps).
 
 Six examples of plugins are provided in this project:
 
--   LaplacianSmoothing: illustrates how to process a mesh using OpenMesh and Radium (using `Ra::Core::TopologicalMesh`). The mesh is selected by the user using a combobox added into the plugins UI area in Radium Main-App.
--   FakeToonMaterial: illustrates how to add a new material in Radium. All the models loaded in MainApplication when this plugin is enabled are assigned with a toon shader.
+-   LaplacianSmoothing: illustrates how to process a mesh using OpenMesh and Radium (using `Ra::Core::TopologicalMesh`). 
+
+    The mesh is selected by the user using a combobox added into the plugins UI area in Radium Main-App.
+    
+-   FakeToonMaterial: illustrates how to add a new material in Radium. 
+
+    All the models loaded in MainApplication when this plugin is enabled are assigned with a toon shader.
+    
 -   CameraManip: illustrates how to create cameras in Radium and switch from one to another.
--   Dummy: illustrates how to create a new system to add components to entities at model load, and tasks to the engine at each frame.
--   MeshFeatureTracking: illustrates how to pick mesh features (vertex, edge, triangle) and display data about these, updated at each frame.
+
+-   Dummy: illustrates how to create a new system to add components to entities at model load, and tasks to the engine 
+at each frame.
+
+-   MeshFeatureTracking: illustrates how to pick mesh features (vertex, edge, triangle) and display data about these, 
+updated at each frame.
+
 -   MeshPaint: illustrates how to paint on a mesh, here painting the per-vertex color.
 
 ## Quick instruction to build and install the examples
@@ -28,12 +41,14 @@ When configuring the examples, the cmake command takes the following options :
 -   `Radium_DIR` must be set to `pathToRadiumInstallation/lib/cmake/Radium`
 -   `INSTALL_IN_RADIUM_BUNDLE`, Off by default.
 
-By default the install target installs the plugin into the directory `installed-<Compiler_id>` in the plugin buildtree. Optional cmake options `-DCMAKE_INSTALL_PREFIX=pathToInstallPlugins`  or `-DINSTALL_IN_RADIUM_BUNDLE=ON` can be provided to install the plugins and resources in specified directory or in the Radium-Engine installation directory. Plugins installed into the Radium-Engine installation directory are automatically loaded by compatible applications while other installation directory must explicitly be added to the plugin directories of the applications.
+By default the install target installs the plugin into the directory `installed-<Compiler_id>` in the plugin buildtree. 
+Optional cmake options `-DCMAKE_INSTALL_PREFIX=pathToInstallPlugins`  or `-DINSTALL_IN_RADIUM_BUNDLE=ON` can be 
+provided to install the plugins and resources in specified directory or in the Radium-Engine installation directory. 
+Plugins installed into the Radium-Engine installation directory are automatically loaded by compatible applications 
+while other installation directory must explicitly be added to the plugin directories of the applications.
 
-## Description of the example plugins
-
-For the prodvided plugins, the cmake option `INSTALL_IN_RADIUM` allows to add the parameter `INSTALL_IN_RADIUM_BUNDLE`
-to each plugin CMakeLists.txt so that the Example plugins will be isntalled into the Radium Bundle
+For the provided plugins, the cmake option `INSTALL_IN_RADIUM` allows to add the parameter `INSTALL_IN_RADIUM_BUNDLE`
+to each plugin CMakeLists.txt so that the Example plugins will be installed into the Radium Bundle
 (i.e. use `cmake -DINSTALL_IN_RADIUM=On`). Note that this option requires to have write access to the Radium Bundle 
 installation directory.
 
