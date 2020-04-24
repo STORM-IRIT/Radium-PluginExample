@@ -19,10 +19,13 @@ Six examples of plugins are provided in this project:
     All the models loaded in MainApplication when this plugin is enabled are assigned with a toon shader.
     
 -   CameraManip: illustrates how to create cameras in Radium and switch from one to another.
+
 -   Dummy: illustrates how to create a new system to add components to entities at model load, and tasks to the engine 
 at each frame.
+
 -   MeshFeatureTracking: illustrates how to pick mesh features (vertex, edge, triangle) and display data about these, 
 updated at each frame.
+
 -   MeshPaint: illustrates how to paint on a mesh, here painting the per-vertex color.
 
 ## Quick instruction to build and install the examples
