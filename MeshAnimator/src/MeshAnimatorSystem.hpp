@@ -3,7 +3,7 @@
 
 #include <MeshAnimatorPluginMacros.hpp>
 
-#include <Engine/System/TimedSystem.hpp>
+#include <Engine/System/System.hpp>
 
 #include <UI/MeshAnimatorUI.h>
 

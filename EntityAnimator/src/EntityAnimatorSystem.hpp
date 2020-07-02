@@ -28,14 +28,14 @@ class ENTITY_ANIMATOR_PLUGIN_API EntityAnimatorSystem : public Ra::Engine::Syste
         if ( !m_timeline ) return;
         using namespace Ra::Core::Animation;
         using Ra::Core::Transform;
-        auto keyframe = new KeyFramedValue<Transform>( entity->getTransform(), 0_ra, linearInterpolate<Transform> );
+        auto keyframe = new KeyFramedValue<Transform>( entity->getTransform(), 0_ra );
         auto inserter = [keyframe, entity]( const Scalar& t ) {
             keyframe->insertKeyFrame( t, entity->getTransform() );
         };
         auto updater = [keyframe, entity]( const Scalar& t ) {
-            entity->setTransform( keyframe->at( t ) );
+            entity->setTransform( keyframe->at( t, linearInterpolate<Transform> ) );
         };
-        m_timeline->registerKeyFramedValue( entity, "Entity Transform", keyframe, inserter, updater );
+        m_timeline->registerKeyFramedValue( entity, KeyFramedValueController( keyframe, "Entity Transform", inserter, updater ) );
     }
 
     void generateTasks( Ra::Core::TaskQueue* taskQueue,

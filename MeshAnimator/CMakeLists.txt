@@ -65,7 +65,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
         ${Qt5_LIBRARIES}
         )
 
-configure_radium_plugin_install(
+configure_radium_plugin(
         NAME ${PROJECT_NAME}
         RESOURCES ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shaders
 )

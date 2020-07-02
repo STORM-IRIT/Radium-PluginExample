@@ -237,22 +237,21 @@ void MeshAnimatorPluginC::animatePosition( bool animate ) {
             if ( animate )
             {
                 auto& P = mesh->getCoreGeometry().vertices()[m_currentVertex];
-                auto keyframedPos = new KeyFramedValue( P, 0, linearInterpolate<Ra::Core::Vector3> );
+                auto keyframedPos = new KeyFramedValue( P, 0 );
                 m_positionKeyframes[m_currentRO][m_currentVertex] = {keyframedPos, P};
-                m_timeline->registerKeyFramedValue(
-                    m_component,
+                m_timeline->registerKeyFramedValue( m_component, KeyFramedValueController(
+                    m_positionKeyframes[m_currentRO][m_currentVertex].first,
                     m_component->getName() + "_vertex" + std::to_string( m_currentVertex ) +
                         "_Position",
-                    m_positionKeyframes[m_currentRO][m_currentVertex].first,
                     [keyframedPos, &P, mesh]( const Scalar& t ) {
                         keyframedPos->insertKeyFrame(
                             t, P + Ra::Core::Vector3{0.01_ra, 0.01_ra, 0.01_ra} );
                         mesh->setDirty( Ra::Engine::Mesh::VERTEX_POSITION );
                     },
                     [keyframedPos, this, mesh]( const Scalar& t ) {
-                        mesh->getCoreGeometry().verticesWithLock()[m_currentVertex] = keyframedPos->at( t );
+                        mesh->getCoreGeometry().verticesWithLock()[m_currentVertex] = keyframedPos->at( t, linearInterpolate<Ra::Core::Vector3> );
                         mesh->getCoreGeometry().verticesUnlock();
-                    } );
+                    } ) );
             }
             else
             {
@@ -285,22 +284,21 @@ void MeshAnimatorPluginC::animateNormal( bool animate ) {
             if ( animate )
             {
                 auto& N = mesh->getCoreGeometry().normals()[m_currentVertex];
-                auto keyframedNor = new KeyFramedValue( N, 0, linearInterpolate<Ra::Core::Vector3> );
+                auto keyframedNor = new KeyFramedValue( N, 0 );
                 m_normalKeyframes[m_currentRO][m_currentVertex] = {keyframedNor, N};
-                m_timeline->registerKeyFramedValue(
-                    m_component,
+                m_timeline->registerKeyFramedValue( m_component, KeyFramedValueController(
+                    m_normalKeyframes[m_currentRO][m_currentVertex].first,
                     m_component->getName() + "_vertex" + std::to_string( m_currentVertex ) +
                         "_Normal",
-                    m_normalKeyframes[m_currentRO][m_currentVertex].first,
                     [keyframedNor, &N, mesh]( const Scalar& t ) {
                         keyframedNor->insertKeyFrame(
                             t, N + Ra::Core::Vector3{-0.1_ra, -0.1_ra, -0.1_ra} );
                         mesh->setDirty( Ra::Engine::Mesh::VERTEX_NORMAL );
                     },
                     [keyframedNor, this, mesh]( const Scalar& t ) {
-                        mesh->getCoreGeometry().normalsWithLock()[m_currentVertex] = keyframedNor->at( t );
+                        mesh->getCoreGeometry().normalsWithLock()[m_currentVertex] = keyframedNor->at( t, linearInterpolate<Ra::Core::Vector3> );
                         mesh->getCoreGeometry().normalsUnlock();
-                    } );
+                    } ) );
             }
             else
             {
