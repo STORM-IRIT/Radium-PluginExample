@@ -13,7 +13,7 @@ class MeshAnimatorPluginC;
 class MESH_ANIMATOR_PLUGIN_API MeshAnimatorSystem : public Ra::Engine::System
 {
   public:
-    MeshAnimatorSystem( MeshAnimatorPluginC* plugin );
+    MeshAnimatorSystem( MeshAnimatorPluginC* plugin = nullptr );
 
     void generateTasks( Ra::Core::TaskQueue* taskQueue,
                         const Ra::Engine::FrameInfo& frameInfo ) override;

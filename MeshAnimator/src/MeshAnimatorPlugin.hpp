@@ -58,7 +58,7 @@ class MESH_ANIMATOR_PLUGIN_API MeshAnimatorPluginC : public QObject, Ra::Plugins
 
     Ra::GuiBase::SelectionManager* m_selectionManager{nullptr};
     Ra::Gui::PickingManager* m_PickingManager{nullptr};
-    Ra::GuiBase::Timeline* m_timeline;
+    Ra::GuiBase::Timeline* m_timeline{nullptr};
 
     Ra::Engine::Component* m_component{nullptr};
     Ra::Core::Utils::Index m_currentRO;

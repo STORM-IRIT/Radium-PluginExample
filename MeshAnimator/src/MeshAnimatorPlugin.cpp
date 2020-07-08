@@ -15,7 +15,7 @@
 #include <Engine/Renderer/RenderObject/RenderObjectManager.hpp>
 
 #include <GuiBase/SelectionManager/SelectionManager.hpp>
-#include <GuiBase/Timeline/Timeline.h>
+#include <GuiBase/Timeline/Timeline.hpp>
 #include <GuiBase/Utils/PickingManager.hpp>
 
 #include <MeshAnimatorSystem.hpp>

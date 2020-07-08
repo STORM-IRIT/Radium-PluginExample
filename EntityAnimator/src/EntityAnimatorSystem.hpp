@@ -9,7 +9,7 @@
 #include <Engine/Entity/Entity.hpp>
 #include <Engine/System/System.hpp>
 
-#include <GuiBase/Timeline/Timeline.h>
+#include <GuiBase/Timeline/Timeline.hpp>
 
 namespace EntityAnimatorPlugin {
 
@@ -42,7 +42,7 @@ class ENTITY_ANIMATOR_PLUGIN_API EntityAnimatorSystem : public Ra::Engine::Syste
                         const Ra::Engine::FrameInfo& frameInfo ) override {}
 
   private:
-    Ra::GuiBase::Timeline* m_timeline;
+    Ra::GuiBase::Timeline* m_timeline{nullptr};
 };
 
 } // namespace EntityAnimatorPlugin
