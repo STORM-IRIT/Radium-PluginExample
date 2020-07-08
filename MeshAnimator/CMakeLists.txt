@@ -34,6 +34,10 @@ set(ma_headers
 	    src/UI/MeshAnimatorUI.h
     )
 
+set(ma_markdowns
+        README.md
+    )
+
 set(ma_uis
 	    src/UI/MeshAnimatorUI.ui
     )
