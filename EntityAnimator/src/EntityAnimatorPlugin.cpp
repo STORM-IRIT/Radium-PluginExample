@@ -14,7 +14,7 @@
 
 namespace EntityAnimatorPlugin {
 
-EntityAnimatorPluginC::~EntityAnimatorPluginC() {}
+EntityAnimatorPluginC::~EntityAnimatorPluginC() = default;
 
 void EntityAnimatorPluginC::registerPlugin( const Ra::Plugins::Context& context ) {
     EntityAnimatorSystem* system = new EntityAnimatorSystem;

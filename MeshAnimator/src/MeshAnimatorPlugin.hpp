@@ -53,16 +53,16 @@ class MESH_ANIMATOR_PLUGIN_API MeshAnimatorPluginC : public QObject, Ra::Plugins
     void animateNormal( bool );
 
   private:
-    MeshAnimatorSystem* m_system{nullptr};
-    MeshAnimatorUI* m_widget{nullptr};
+    MeshAnimatorSystem* m_system {nullptr};
+    MeshAnimatorUI* m_widget {nullptr};
 
-    Ra::GuiBase::SelectionManager* m_selectionManager{nullptr};
-    Ra::Gui::PickingManager* m_PickingManager{nullptr};
-    Ra::GuiBase::Timeline* m_timeline{nullptr};
+    Ra::GuiBase::SelectionManager* m_selectionManager {nullptr};
+    Ra::Gui::PickingManager* m_PickingManager {nullptr};
+    Ra::GuiBase::Timeline* m_timeline {nullptr};
 
-    Ra::Engine::Component* m_component{nullptr};
+    Ra::Engine::Component* m_component {nullptr};
     Ra::Core::Utils::Index m_currentRO;
-    int m_currentVertex;
+    int m_currentVertex {-1};
 
     using KeyFramedValue = Ra::Core::Animation::KeyFramedValue<Ra::Core::Vector3>;
     using KeyFrames      = std::map<int, std::pair<KeyFramedValue*, Ra::Core::Vector3>>;

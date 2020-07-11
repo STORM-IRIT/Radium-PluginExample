@@ -27,7 +27,7 @@ using namespace Ra::Core::Utils;
 
 namespace MeshAnimatorPlugin {
 
-MeshAnimatorPluginC::MeshAnimatorPluginC() {}
+MeshAnimatorPluginC::MeshAnimatorPluginC() = default;
 
 MeshAnimatorPluginC::~MeshAnimatorPluginC() {
     delete m_system;
