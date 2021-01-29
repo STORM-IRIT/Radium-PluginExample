@@ -13,7 +13,7 @@ endif ()
 
 option(INSTALL_IN_RADIUM_BUNDLE "Install plugins in Radium-Bundle dir" OFF)
 
-add_subdirectory(fake-toon)
+#add_subdirectory(fake-toon)
 add_subdirectory(laplacian-smoothing)
 add_subdirectory(CameraManip)
 add_subdirectory(Dummy)

@@ -156,7 +156,7 @@ void MeshPaintComponent::paintMesh( const Ra::Engine::Renderer::PickingResult& p
     // auto triangleMesh = compMess->get<Ra::Core::Geometry::TriangleMesh>( getEntity(),
     // m_dataId ); however here we skip the search in the component map
 
-    const auto& t = m_mesh->getCoreGeometry().m_indices;
+    const auto& t = m_mesh->getCoreGeometry().getIndices();
     ON_DEBUG( auto colAttrib =
                   m_mesh->getCoreGeometry().getAttribHandle<Ra::Core::Vector4>( colAttribName ) );
     CORE_ASSERT( colAttrib == m_currentColorAttribHdl, "Inconsistent AttribHandle used" );

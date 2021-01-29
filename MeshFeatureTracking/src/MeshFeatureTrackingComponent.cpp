@@ -242,7 +242,7 @@ void MeshFeatureTrackingComponent::setData( const Ra::Engine::Renderer::PickingR
         return;
     }
     // if lines, retrieve triangle-based indices
-    const auto& t = m_pickedMesh->getCoreGeometry().m_indices;
+    const auto& t = m_pickedMesh->getCoreGeometry().getIndices();
     if ( rm == MeshRenderMode::RM_LINES )
     {
         uint v0, v1, t0, t1;
@@ -393,7 +393,7 @@ void MeshFeatureTrackingComponent::setVertexIdx( uint idx ) {
     // also need to change second for feature Scale
     const auto rm = m_pickedMesh->getRenderMode();
     if ( rm == MeshRenderMode::RM_POINTS ) { return; }
-    const auto& triangles = m_pickedMesh->getCoreGeometry().m_indices;
+    const auto& triangles = m_pickedMesh->getCoreGeometry().getIndices();
     if ( rm == MeshRenderMode::RM_LINES )
     {
         for ( uint i = 0; i < triangles.size(); ++i )
@@ -512,7 +512,7 @@ void MeshFeatureTrackingComponent::setTriangleIdx( uint idx ) {
 
     // also need to change all for feature Scale, Position and Vector
     const auto rm = m_pickedMesh->getRenderMode();
-    const auto& triangles = m_pickedMesh->getCoreGeometry().m_indices;
+    const auto& triangles = m_pickedMesh->getCoreGeometry().getIndices();
     if ( rm == MeshRenderMode::RM_TRIANGLES )
     {
         const auto& t    = triangles[idx];

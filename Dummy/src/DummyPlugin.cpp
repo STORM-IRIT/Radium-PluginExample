@@ -14,19 +14,19 @@
 
 namespace DummyPlugin {
 
-DummyPlugin::~DummyPlugin() {}
+DummyPluginC::~DummyPluginC() {}
 
-void DummyPlugin::registerPlugin( const Ra::Plugins::Context& context ) {
+void DummyPluginC::registerPlugin( const Ra::Plugins::Context& context ) {
     DummySystem* system = new DummySystem;
     context.m_engine->registerSystem( "DummySystem", system );
 }
 
-bool DummyPlugin::doAddWidget( QString& name ) {
+bool DummyPluginC::doAddWidget( QString& name ) {
     name = "Dummy Mesh";
     return true;
 }
 
-QWidget* DummyPlugin::getWidget() {
+QWidget* DummyPluginC::getWidget() {
     QWidget* widget = new QWidget;
 
     m_label             = new QLabel( "I am a dummy label", widget );
@@ -37,16 +37,16 @@ QWidget* DummyPlugin::getWidget() {
     layout->addWidget( m_label );
     layout->addWidget( button );
 
-    connect( button, &QPushButton::pressed, this, &DummyPlugin::sayHello );
+    connect( button, &QPushButton::pressed, this, &DummyPluginC::sayHello );
 
     return widget;
 }
 
-bool DummyPlugin::doAddMenu() {
+bool DummyPluginC::doAddMenu() {
     return true;
 }
 
-QMenu* DummyPlugin::getMenu() {
+QMenu* DummyPluginC::getMenu() {
     QMenu* menu = new QMenu( "Dummy" );
 
     QAction* a1 = menu->addAction( "Hello there" );
@@ -58,15 +58,15 @@ QMenu* DummyPlugin::getMenu() {
     return menu;
 }
 
-bool DummyPlugin::doAddAction( int& /*nb*/ ) {
+bool DummyPluginC::doAddAction( int& /*nb*/ ) {
     return false;
 }
 
-QAction* DummyPlugin::getAction( int /*id*/ ) {
+QAction* DummyPluginC::getAction( int /*id*/ ) {
     return nullptr;
 }
 
-void DummyPlugin::sayHello() {
+void DummyPluginC::sayHello() {
     m_label->setText( "I have been clicked at least once !" );
     QMessageBox::warning( nullptr, "Dummy Plugin", "Hello, Radium World !" );
 }
