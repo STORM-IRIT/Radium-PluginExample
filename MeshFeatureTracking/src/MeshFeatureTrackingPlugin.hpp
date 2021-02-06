@@ -7,7 +7,7 @@
 #include <QObject>
 #include <QtPlugin>
 
-#include <UI/MeshFeatureTrackingUI.h>
+#include <UI/MeshFeatureTrackingUI.hpp>
 
 #include <MeshFeatureTrackingPluginMacros.hpp>
 

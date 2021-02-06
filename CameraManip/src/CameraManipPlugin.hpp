@@ -5,7 +5,7 @@
 #include <PluginBase/RadiumPluginInterface.hpp>
 #include <QObject>
 
-#include <UI/CameraManipUI.h>
+#include <UI/CameraManipUI.hpp>
 
 #include <CameraManipPluginMacros.hpp>
 

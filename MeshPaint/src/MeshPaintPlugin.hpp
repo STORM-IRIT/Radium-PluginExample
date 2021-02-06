@@ -10,7 +10,7 @@
 #include <QObject>
 #include <QtPlugin>
 
-#include <UI/MeshPaintUI.h>
+#include <UI/MeshPaintUI.hpp>
 
 #include <MeshPaintPluginMacros.hpp>
 

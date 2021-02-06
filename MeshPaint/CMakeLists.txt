@@ -33,7 +33,7 @@ set(mp_headers
 	src/MeshPaintSystem.hpp
 	src/MeshPaintPlugin.hpp
 	src/MeshPaintPluginMacros.hpp
-	src/UI/MeshPaintUI.h
+	src/UI/MeshPaintUI.hpp
         )
 
 set(mp_uis

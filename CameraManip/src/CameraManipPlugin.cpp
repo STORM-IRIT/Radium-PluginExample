@@ -16,7 +16,7 @@
 #include <Gui/Viewer/Viewer.hpp>
 
 #include "ui_CameraManipUI.h"
-#include <UI/CameraManipUI.h>
+#include <UI/CameraManipUI.hpp>
 
 namespace CameraManipPlugin {
 

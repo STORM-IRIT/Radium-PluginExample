@@ -28,7 +28,7 @@ set(cm_sources
 set(cm_headers
 	src/CameraManipPlugin.hpp
 	src/CameraManipPluginMacros.hpp
-	src/UI/CameraManipUI.h
+	src/UI/CameraManipUI.hpp
         )
 
 set(cm_markdowns

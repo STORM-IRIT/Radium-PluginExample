@@ -17,7 +17,7 @@
 
 #include "ui_MeshPaintUI.h"
 #include <MeshPaintSystem.hpp>
-#include <UI/MeshPaintUI.h>
+#include <UI/MeshPaintUI.hpp>
 
 namespace MeshPaintPlugin {
 

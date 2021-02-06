@@ -6,7 +6,7 @@
 #include <Engine/Scene/Component.hpp>
 #include <Gui/Utils/PickingManager.hpp>
 
-#include <UI/MeshFeatureTrackingUI.h>
+#include <UI/MeshFeatureTrackingUI.hpp>
 
 namespace Ra {
 namespace Engine {

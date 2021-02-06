@@ -31,7 +31,7 @@ set(mft_headers
 	src/MeshFeatureTrackingComponent.hpp
 	src/MeshFeatureTrackingPlugin.hpp
 	src/MeshFeatureTrackingPluginMacros.hpp
-	src/UI/MeshFeatureTrackingUI.h
+	src/UI/MeshFeatureTrackingUI.hpp
         )
 
 set(mft_uis

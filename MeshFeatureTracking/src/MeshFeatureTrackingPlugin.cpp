@@ -15,7 +15,7 @@
 #include <MeshFeatureTrackingComponent.hpp>
 
 #include "ui_MeshFeatureTrackingUI.h"
-#include <UI/MeshFeatureTrackingUI.h>
+#include <UI/MeshFeatureTrackingUI.hpp>
 
 namespace MeshFeatureTrackingPlugin {
 
