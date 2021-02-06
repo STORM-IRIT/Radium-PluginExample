@@ -75,6 +75,5 @@ endif(INSTALL_IN_RADIUM_BUNDLE)
 
 configure_radium_plugin(
         NAME ${PROJECT_NAME}
-        RESOURCES ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shaders
 	"${ARGS}"
 )
