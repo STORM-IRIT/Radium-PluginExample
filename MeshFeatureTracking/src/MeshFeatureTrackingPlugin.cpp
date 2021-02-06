@@ -4,13 +4,13 @@
 #include <QIcon>
 #include <QToolBar>
 
-#include <Engine/Entity/Entity.hpp>
-#include <Engine/Managers/EntityManager/EntityManager.hpp>
-#include <Engine/Managers/SignalManager/SignalManager.hpp>
+#include <Engine/Scene/Entity.hpp>
+#include <Engine/Scene/EntityManager.hpp>
+#include <Engine/Scene/SignalManager.hpp>
 #include <Engine/RadiumEngine.hpp>
 
-#include <GuiBase/SelectionManager/SelectionManager.hpp>
-#include <GuiBase/Utils/PickingManager.hpp>
+#include <Gui/SelectionManager/SelectionManager.hpp>
+#include <Gui/Utils/PickingManager.hpp>
 
 #include <MeshFeatureTrackingComponent.hpp>
 
@@ -34,7 +34,7 @@ void MeshFeatureTrackingPluginC::registerPlugin( const Ra::Plugins::Context& con
     m_selectionManager = context.m_selectionManager;
     m_PickingManager   = context.m_pickingManager;
     connect( m_selectionManager,
-             &Ra::GuiBase::SelectionManager::currentChanged,
+             &Ra::Gui::SelectionManager::currentChanged,
              this,
              &MeshFeatureTrackingPluginC::onCurrentChanged );
     connect( this,

@@ -59,7 +59,7 @@ class MeshPaintPluginC : public QObject, Ra::Plugins::RadiumPluginInterface
   private:
     MeshPaintUI* m_widget;
 
-    Ra::GuiBase::SelectionManager* m_selectionManager;
+    Ra::Gui::SelectionManager* m_selectionManager;
     Ra::Gui::PickingManager* m_PickingManager;
 
     class MeshPaintSystem* m_system;

@@ -15,7 +15,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 project(MeshPaint VERSION 1.0.0 LANGUAGES CXX)
 
 # Qt stuff
-find_package(Radium REQUIRED Core Engine PluginBase GuiBase IO)
+find_package(Radium REQUIRED Core Engine PluginBase Gui IO)
 find_package(Qt5 COMPONENTS Core Widgets REQUIRED)
 set(Qt5_LIBRARIES Qt5::Core Qt5::Widgets)
 set(CMAKE_AUTOMOC ON)
@@ -64,7 +64,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
         Radium::Core
         Radium::Engine
         Radium::PluginBase
-        Radium::GuiBase
+        Radium::Gui
         ${Qt5_LIBRARIES}
         )
 

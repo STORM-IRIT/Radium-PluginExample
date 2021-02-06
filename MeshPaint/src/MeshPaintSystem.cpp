@@ -5,20 +5,20 @@
 #include <Core/Tasks/Task.hpp>
 #include <Core/Tasks/TaskQueue.hpp>
 
-#include <Engine/Entity/Entity.hpp>
+#include <Engine/Scene/Entity.hpp>
 #include <Engine/FrameInfo.hpp>
-#include <Engine/Managers/ComponentMessenger/ComponentMessenger.hpp>
+#include <Engine/Scene/ComponentMessenger.hpp>
 #include <Engine/RadiumEngine.hpp>
-#include <Engine/Renderer/RenderTechnique/RenderTechnique.hpp>
+#include <Engine/Rendering/RenderTechnique.hpp>
 
 #include <MeshPaintComponent.hpp>
 
 namespace MeshPaintPlugin {
-MeshPaintSystem::MeshPaintSystem() : Ra::Engine::System() {}
+MeshPaintSystem::MeshPaintSystem() : Ra::Engine::Scene::System() {}
 
 MeshPaintSystem::~MeshPaintSystem() {}
 
-void MeshPaintSystem::handleAssetLoading( Ra::Engine::Entity* entity,
+void MeshPaintSystem::handleAssetLoading( Ra::Engine::Scene::Entity* entity,
                                           const Ra::Core::Asset::FileData* fileData ) {
     auto geomData = fileData->getGeometryData();
 
@@ -47,7 +47,7 @@ void MeshPaintSystem::startPaintMesh( bool start ) {
     }
 }
 
-void MeshPaintSystem::paintMesh( const Ra::Engine::Renderer::PickingResult& picking,
+void MeshPaintSystem::paintMesh( const Ra::Engine::Rendering::Renderer::PickingResult& picking,
                                  const Ra::Core::Utils::Color& color ) {
     for ( auto& compEntry : this->m_components )
     {

@@ -1,12 +1,12 @@
 #pragma once
 
 #include "plugin.hpp"
-#include <Engine/Renderer/Material/Material.hpp>
+#include <Engine/Data/Material.hpp>
 
 namespace FakeToonPluginExample {
 
 /// Simple shader class implementing basic toon shader
-class FAKE_TOON_PLUGIN_EXAMPLE_API FakeToonMaterial final : public Ra::Engine::Material
+class FAKE_TOON_PLUGIN_EXAMPLE_API FakeToonMaterial final : public Ra::Engine::Data::Material
 {
   public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW

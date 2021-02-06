@@ -2,17 +2,17 @@
 
 #include <Core/Tasks/Task.hpp>
 #include <Core/Tasks/TaskQueue.hpp>
-#include <Engine/Entity/Entity.hpp>
+#include <Engine/Scene/Entity.hpp>
 #include <Engine/FrameInfo.hpp>
 #include <Engine/RadiumEngine.hpp>
-#include <Engine/Renderer/RenderTechnique/RenderTechnique.hpp>
+#include <Engine/Rendering/RenderTechnique.hpp>
 
 #include "DummyComponent.hpp"
 #include "DummyTask.hpp"
 
 namespace DummyPlugin {
 
-DummySystem::DummySystem() : Ra::Engine::System() {
+DummySystem::DummySystem() : Ra::Engine::Scene::System() {
     m_data = new DummyData;
     m_data->foo = 42;
     m_data->bar = 1337;
@@ -22,7 +22,7 @@ DummySystem::~DummySystem() {
     delete m_data;
 }
 
-void DummySystem::handleAssetLoading( Ra::Engine::Entity *entity, const Ra::Core::Asset::FileData *data ) {
+void DummySystem::handleAssetLoading( Ra::Engine::Scene::Entity *entity, const Ra::Core::Asset::FileData *data ) {
     std::string componentName = "DummyComponent_" + entity->getName();
     DummyComponent* component = new DummyComponent( componentName, entity );
     registerComponent( entity, component );

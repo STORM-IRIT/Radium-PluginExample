@@ -7,24 +7,24 @@
 #include <Core/Geometry/TriangleMesh.hpp>
 #include <Core/Tasks/TaskQueue.hpp>
 
-#include <Engine/Entity/Entity.hpp>
-#include <Engine/Renderer/Material/Material.hpp>
-#include <Engine/Renderer/Mesh/Mesh.hpp>
-#include <Engine/Renderer/RenderObject/RenderObject.hpp>
-#include <Engine/Renderer/RenderObject/RenderObjectManager.hpp>
-#include <Engine/Renderer/RenderTechnique/RenderTechnique.hpp>
-#include <Engine/Renderer/RenderTechnique/ShaderConfigFactory.hpp>
+#include <Engine/Data/Material.hpp>
+#include <Engine/Data/Mesh.hpp>
+#include <Engine/Data/ShaderConfigFactory.hpp>
+#include <Engine/Rendering/RenderObject.hpp>
+#include <Engine/Rendering/RenderObjectManager.hpp>
+#include <Engine/Rendering/RenderTechnique.hpp>
+#include <Engine/Scene/Entity.hpp>
 
 using namespace Ra::Core::Utils; // log
 
 namespace MeshPaintPlugin {
 
 static const std::string colAttribName =
-    Ra::Engine::Mesh::getAttribName( Ra::Engine::Mesh::VERTEX_COLOR );
+    Ra::Engine::Data::Mesh::getAttribName( Ra::Engine::Data::Mesh::VERTEX_COLOR );
 
-MeshPaintComponent::MeshPaintComponent( const std::string& name, Ra::Engine::Entity* entity ) :
-    Ra::Engine::Component( name, entity ),
-    m_mesh( nullptr ) {}
+MeshPaintComponent::MeshPaintComponent( const std::string& name,
+                                        Ra::Engine::Scene::Entity* entity ) :
+    Ra::Engine::Scene::Component( name, entity ), m_mesh( nullptr ) {}
 
 MeshPaintComponent::~MeshPaintComponent() {}
 
@@ -36,8 +36,8 @@ void MeshPaintComponent::setDataId( const std::string& id ) {
 }
 
 void MeshPaintComponent::initialize() {
-    using Ra::Engine::Mesh;
-    auto compMess = Ra::Engine::ComponentMessenger::getInstance();
+    using Ra::Engine::Data::Mesh;
+    auto compMess = Ra::Engine::Scene::ComponentMessenger::getInstance();
     // Look for the data we need
     bool geometryData = compMess->canGet<Ra::Core::Geometry::TriangleMesh>( getEntity(), m_dataId );
 
@@ -122,34 +122,35 @@ void MeshPaintComponent::bakePaintToDiffuse() {
     // auto triangleMesh = compMess->get<Ra::Core::Geometry::TriangleMesh>( getEntity(),
     // m_dataId ); however here we skip the search in the component map
     Ra::Core::Geometry::TriangleMesh& triangleMesh = m_mesh->getCoreGeometry();
-    m_baseColors = triangleMesh.getAttrib( m_currentColorAttribHdl ).data();
+    m_baseColors       = triangleMesh.getAttrib( m_currentColorAttribHdl ).data();
     m_isBaseColorValid = true;
 }
 
-void MeshPaintComponent::paintMesh( const Ra::Engine::Renderer::PickingResult& picking,
+void MeshPaintComponent::paintMesh( const Ra::Engine::Rendering::Renderer::PickingResult& picking,
                                     const Ra::Core::Utils::Color& color ) {
-    using Ra::Engine::Mesh;
+    using Ra::Engine::Data::Mesh;
     if ( !getRoMgr()->exists( *m_renderObjectReader() ) ) { return; }
     CORE_ASSERT( m_mesh != nullptr, "We should be have a Mesh storing a TriangleMesh here" );
 
     // check it's for us
-    if ( *m_renderObjectReader() != picking.m_roIdx || picking.m_mode == Ra::Engine::Renderer::RO )
+    if ( *m_renderObjectReader() != picking.m_roIdx ||
+         picking.m_mode == Ra::Engine::Rendering::Renderer::RO )
     { return; }
     auto pickingRenderMode = m_mesh->pickingRenderMode();
 
-    if ( pickingRenderMode == Ra::Engine::Displayable::NO_PICKING ) { return; }
+    if ( pickingRenderMode == Ra::Engine::Data::Displayable::NO_PICKING ) { return; }
 
-    if ( ( m_mesh->getRenderMode() == Ra::Engine::Mesh::RM_LINES ||
-           m_mesh->getRenderMode() == Ra::Engine::Mesh::RM_LINE_LOOP ||
-           m_mesh->getRenderMode() == Ra::Engine::Mesh::RM_LINE_STRIP ||
-           m_mesh->getRenderMode() == Ra::Engine::Mesh::RM_LINES_ADJACENCY ||
-           m_mesh->getRenderMode() == Ra::Engine::Mesh::RM_LINE_STRIP_ADJACENCY ||
-           m_mesh->getRenderMode() == Ra::Engine::Mesh::RM_TRIANGLE_STRIP ||
-           m_mesh->getRenderMode() == Ra::Engine::Mesh::RM_TRIANGLE_FAN ) )
+    if ( ( m_mesh->getRenderMode() == Ra::Engine::Data::Mesh::RM_LINES ||
+           m_mesh->getRenderMode() == Ra::Engine::Data::Mesh::RM_LINE_LOOP ||
+           m_mesh->getRenderMode() == Ra::Engine::Data::Mesh::RM_LINE_STRIP ||
+           m_mesh->getRenderMode() == Ra::Engine::Data::Mesh::RM_LINES_ADJACENCY ||
+           m_mesh->getRenderMode() == Ra::Engine::Data::Mesh::RM_LINE_STRIP_ADJACENCY ||
+           m_mesh->getRenderMode() == Ra::Engine::Data::Mesh::RM_TRIANGLE_STRIP ||
+           m_mesh->getRenderMode() == Ra::Engine::Data::Mesh::RM_TRIANGLE_FAN ) )
     { return; }
-    if ( pickingRenderMode == Ra::Engine::Displayable::PKM_POINTS &&
-         ( picking.m_mode != Ra::Engine::Renderer::VERTEX &&
-           picking.m_mode != Ra::Engine::Renderer::C_VERTEX ) )
+    if ( pickingRenderMode == Ra::Engine::Data::Displayable::PKM_POINTS &&
+         ( picking.m_mode != Ra::Engine::Rendering::Renderer::VERTEX &&
+           picking.m_mode != Ra::Engine::Rendering::Renderer::C_VERTEX ) )
     { return; }
 
     // Could also be accessed using
@@ -166,11 +167,10 @@ void MeshPaintComponent::paintMesh( const Ra::Engine::Renderer::PickingResult& p
 
     switch ( picking.m_mode )
     {
-    case Ra::Engine::Renderer::VERTEX:
+    case Ra::Engine::Rendering::Renderer::VERTEX:
         [[fallthrough]];
-    case Ra::Engine::Renderer::C_VERTEX:
-    {
-        if ( pickingRenderMode == Ra::Engine::Displayable::PKM_POINTS )
+    case Ra::Engine::Rendering::Renderer::C_VERTEX: {
+        if ( pickingRenderMode == Ra::Engine::Data::Displayable::PKM_POINTS )
         {
             for ( auto e : picking.m_elementIdx )
             {
@@ -188,10 +188,9 @@ void MeshPaintComponent::paintMesh( const Ra::Engine::Renderer::PickingResult& p
         m_mesh->setDirty( Mesh::VERTEX_COLOR );
         break;
     }
-    case Ra::Engine::Renderer::EDGE:
+    case Ra::Engine::Rendering::Renderer::EDGE:
         [[fallthrough]];
-    case Ra::Engine::Renderer::C_EDGE:
-    {
+    case Ra::Engine::Rendering::Renderer::C_EDGE: {
         for ( size_t e = 0; e < picking.m_elementIdx.size(); ++e )
         {
             const auto& elt    = t[size_t( picking.m_elementIdx[e] )];
@@ -202,10 +201,9 @@ void MeshPaintComponent::paintMesh( const Ra::Engine::Renderer::PickingResult& p
 
         break;
     }
-    case Ra::Engine::Renderer::TRIANGLE:
+    case Ra::Engine::Rendering::Renderer::TRIANGLE:
         [[fallthrough]];
-    case Ra::Engine::Renderer::C_TRIANGLE:
-    {
+    case Ra::Engine::Rendering::Renderer::C_TRIANGLE: {
         for ( size_t e = 0; e < picking.m_elementIdx.size(); ++e )
         {
             const auto& elt    = t[size_t( picking.m_elementIdx[e] )];
@@ -220,7 +218,6 @@ void MeshPaintComponent::paintMesh( const Ra::Engine::Renderer::PickingResult& p
     default:
         break;
     }
-
     colorAttrib.unlock();
 }
 

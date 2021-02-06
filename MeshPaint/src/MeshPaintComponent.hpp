@@ -7,10 +7,10 @@
 #include <Core/Utils/Attribs.hpp>
 #include <Core/Utils/Color.hpp>
 
-#include <Engine/Component/Component.hpp>
-#include <Engine/Managers/ComponentMessenger/ComponentMessenger.hpp>
-#include <Engine/Renderer/RenderObject/RenderObject.hpp>
-#include <Engine/Renderer/Renderer.hpp>
+#include <Engine/Rendering/RenderObject.hpp>
+#include <Engine/Rendering/Renderer.hpp>
+#include <Engine/Scene/Component.hpp>
+#include <Engine/Scene/ComponentMessenger.hpp>
 
 namespace Ra {
 namespace Core {
@@ -19,7 +19,9 @@ struct TaskParams;
 } // namespace Core
 namespace Engine {
 struct FrameInfo;
+namespace Data {
 class Mesh;
+}
 } // namespace Engine
 } // namespace Ra
 
@@ -28,10 +30,10 @@ namespace MeshPaintPlugin {
 /*!
  * \brief The MeshPaintComponent class allows to paint over TriangleMeshes
  */
-class MESH_PAINT_PLUGIN_API MeshPaintComponent : public Ra::Engine::Component
+class MESH_PAINT_PLUGIN_API MeshPaintComponent : public Ra::Engine::Scene::Component
 {
   public:
-    MeshPaintComponent( const std::string& name, Ra::Engine::Entity* entity );
+    MeshPaintComponent( const std::string& name, Ra::Engine::Scene::Entity* entity );
     ~MeshPaintComponent() override;
 
     virtual void initialize() override;
@@ -45,22 +47,22 @@ class MESH_PAINT_PLUGIN_API MeshPaintComponent : public Ra::Engine::Component
     /// Overwrite original colors with current paint
     /// \warning Called for all the components of the scene !
     void bakePaintToDiffuse();
-    void paintMesh( const Ra::Engine::Renderer::PickingResult& picking,
+    void paintMesh( const Ra::Engine::Rendering::Renderer::PickingResult& picking,
                     const Ra::Core::Utils::Color& color );
 
   protected:
     // Geometry data
-    Ra::Engine::ComponentMessenger::CallbackTypes<Ra::Core::Utils::Index>::Getter
+    Ra::Engine::Scene::ComponentMessenger::CallbackTypes<Ra::Core::Utils::Index>::Getter
         m_renderObjectReader;
-    Ra::Engine::Mesh* m_mesh;
+    Ra::Engine::Data::Mesh* m_mesh;
 
     // Data id for compoenent messenger
     std::string m_dataId;
 
     // Initial RO shader config when not painting
-    Ra::Engine::ShaderConfiguration m_baseConfig;
+    Ra::Engine::Data::ShaderConfiguration m_baseConfig;
     Ra::Core::Vector4Array m_baseColors;
-    bool m_isBaseColorValid{false};
+    bool m_isBaseColorValid {false};
     Ra::Core::Utils::AttribHandle<Ra::Core::Vector4> m_currentColorAttribHdl;
 };
 

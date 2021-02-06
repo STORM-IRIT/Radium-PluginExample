@@ -4,7 +4,7 @@
 #include <QFrame>
 #include <QColor>
 
-#include <GuiBase/Utils/PickingManager.hpp>
+#include <Gui/Utils/PickingManager.hpp>
 
 namespace UI
 {

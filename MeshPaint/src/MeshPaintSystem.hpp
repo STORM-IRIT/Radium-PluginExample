@@ -5,8 +5,8 @@
 
 #include <Core/Utils/Color.hpp>
 
-#include <Engine/Renderer/Renderer.hpp>
-#include <Engine/System/System.hpp>
+#include <Engine/Rendering/Renderer.hpp>
+#include <Engine/Scene/System.hpp>
 
 namespace Ra {
 namespace Engine {
@@ -21,13 +21,13 @@ class MeshPaintComponent;
 }
 
 namespace MeshPaintPlugin {
-class MESH_PAINT_PLUGIN_API MeshPaintSystem : public Ra::Engine::System
+class MESH_PAINT_PLUGIN_API MeshPaintSystem : public Ra::Engine::Scene::System
 {
   public:
     MeshPaintSystem();
     virtual ~MeshPaintSystem();
 
-    virtual void handleAssetLoading( Ra::Engine::Entity* entity,
+    virtual void handleAssetLoading( Ra::Engine::Scene::Entity* entity,
                                      const Ra::Core::Asset::FileData* fileData ) override;
 
     virtual void generateTasks( Ra::Core::TaskQueue* taskQueue,
@@ -35,7 +35,7 @@ class MESH_PAINT_PLUGIN_API MeshPaintSystem : public Ra::Engine::System
 
     void startPaintMesh( bool start );
 
-    void paintMesh( const Ra::Engine::Renderer::PickingResult& picking,
+    void paintMesh( const Ra::Engine::Rendering::Renderer::PickingResult& picking,
                     const Ra::Core::Utils::Color& color );
 
     void bakeToDiffuse();

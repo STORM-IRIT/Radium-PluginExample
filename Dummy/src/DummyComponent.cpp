@@ -1,14 +1,14 @@
 #include "DummyComponent.hpp"
 
-#include <Engine/Renderer/Mesh/Mesh.hpp>
-#include <Engine/Renderer/RenderObject/Primitives/DrawPrimitives.hpp>
-#include <Engine/Renderer/RenderObject/RenderObjectManager.hpp>
-#include <Engine/Renderer/RenderTechnique/RenderTechnique.hpp>
-#include <Engine/Renderer/RenderTechnique/ShaderConfiguration.hpp>
-#include <Engine/Renderer/RenderTechnique/ShaderProgramManager.hpp>
+#include <Engine/Data/Mesh.hpp>
+#include <Engine/Data/DrawPrimitives.hpp>
+#include <Engine/Rendering/RenderObjectManager.hpp>
+#include <Engine/Rendering/RenderTechnique.hpp>
+#include <Engine/Data/ShaderConfiguration.hpp>
+#include <Engine/Data/ShaderProgramManager.hpp>
 
 namespace DummyPlugin {
-DummyComponent::DummyComponent( const std::string& name, Ra::Engine::Entity* entity ) : Ra::Engine::Component( name, entity ) {}
+DummyComponent::DummyComponent( const std::string& name, Ra::Engine::Scene::Entity* entity ) : Ra::Engine::Scene::Component( name, entity ) {}
 
 DummyComponent::~DummyComponent() {}
 

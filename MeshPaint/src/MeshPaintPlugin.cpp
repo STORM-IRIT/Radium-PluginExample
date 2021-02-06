@@ -4,16 +4,16 @@
 #include <QIcon>
 #include <QToolBar>
 
-#include <Engine/Entity/Entity.hpp>
-#include <Engine/Managers/EntityManager/EntityManager.hpp>
-#include <Engine/Managers/SignalManager/SignalManager.hpp>
-#include <Engine/Managers/SystemDisplay/SystemDisplay.hpp>
+#include <Engine/Scene/Entity.hpp>
+#include <Engine/Scene/EntityManager.hpp>
+#include <Engine/Scene/SignalManager.hpp>
+#include <Engine/Scene/SystemDisplay.hpp>
 #include <Engine/RadiumEngine.hpp>
-#include <Engine/Renderer/RenderObject/RenderObject.hpp>
-#include <Engine/Renderer/RenderObject/RenderObjectManager.hpp>
+#include <Engine/Rendering/RenderObject.hpp>
+#include <Engine/Rendering/RenderObjectManager.hpp>
 
-#include <GuiBase/SelectionManager/SelectionManager.hpp>
-#include <GuiBase/Utils/PickingManager.hpp>
+#include <Gui/SelectionManager/SelectionManager.hpp>
+#include <Gui/Utils/PickingManager.hpp>
 
 #include "ui_MeshPaintUI.h"
 #include <MeshPaintSystem.hpp>
@@ -44,7 +44,7 @@ void MeshPaintPluginC::registerPlugin( const Ra::Plugins::Context& context ) {
     m_system           = new MeshPaintSystem;
     context.m_engine->registerSystem( "MeshPaintSystem", m_system );
     connect( m_selectionManager,
-             &Ra::GuiBase::SelectionManager::currentChanged,
+             &Ra::Gui::SelectionManager::currentChanged,
              this,
              &MeshPaintPluginC::onCurrentChanged );
     connect( m_widget, &MeshPaintUI::paintColor, this, &MeshPaintPluginC::activePaintColor );

@@ -30,7 +30,7 @@ void MeshFeatureTrackingUI::updateTracking( const FeatureData& data,
     ui->m_triangleInfo->setEnabled( false );
     switch ( data.m_mode )
     {
-    case Ra::Engine::Renderer::VERTEX:
+    case Ra::Engine::Rendering::Renderer::VERTEX:
     {
         ui->m_vertexInfo->setEnabled( true );
         ui->m_vertexIdx->blockSignals( true );
@@ -44,14 +44,14 @@ void MeshFeatureTrackingUI::updateTracking( const FeatureData& data,
         ui->m_vertexNZ->setText( QString::number( double( vec[2] ) ) );
         break;
     }
-    case Ra::Engine::Renderer::EDGE:
+    case Ra::Engine::Rendering::Renderer::EDGE:
     {
         ui->m_edgeInfo->setEnabled( true );
         ui->m_edgeV0->setText( QString::number( data.m_data[0] ) );
         ui->m_edgeV1->setText( QString::number( data.m_data[1] ) );
         break;
     }
-    case Ra::Engine::Renderer::TRIANGLE:
+    case Ra::Engine::Rendering::Renderer::TRIANGLE:
     {
         ui->m_triangleInfo->setEnabled( true );
         ui->m_triangleIdx->blockSignals( true );

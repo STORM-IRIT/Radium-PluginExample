@@ -3,18 +3,18 @@
 #include <Core/Resources/Resources.hpp>
 #include <Core/Utils/Color.hpp>
 
-#include <Engine/Renderer/RenderTechnique/RenderTechnique.hpp>
-#include <Engine/Renderer/RenderTechnique/ShaderConfigFactory.hpp>
-#include <Engine/Renderer/RenderTechnique/ShaderProgram.hpp>
+#include <Engine/Data/ShaderConfigFactory.hpp>
+#include <Engine/Data/ShaderProgram.hpp>
+#include <Engine/Rendering/RenderTechnique.hpp>
 
 #include <Core/Utils/Log.hpp>
 using namespace Ra::Core::Utils;
 
 namespace FakeToonPluginExample {
-static const std::string materialName{"FakeToon"};
+static const std::string materialName {"FakeToon"};
 
 FakeToonMaterial::FakeToonMaterial( const std::string& instanceName ) :
-    Ra::Engine::Material( instanceName, materialName ) {}
+    Ra::Engine::Data::Material( instanceName, materialName ) {}
 
 void FakeToonMaterial::updateGL() {
     if ( !m_isDirty ) { return; }
@@ -35,9 +35,16 @@ void FakeToonMaterial::updateGL() {
 
 void FakeToonMaterial::registerMaterial() {
     // gets the resource path of the plugins
-    Ra::Core::Resources::ResourcesLocator locator(
+    auto pluginPathOpt = Ra::Core::Resources::getResourcesPath(
         reinterpret_cast<void*>( &FakeToonMaterial::registerMaterial ), "" );
-    auto pluginPath = locator.getBasePath();
+
+    if ( !pluginPathOpt )
+    {
+        LOG( logERROR ) << "Plugin Path not found, register material stopped.";
+        return;
+    }
+    auto pluginPath = *pluginPathOpt;
+
     LOG( logINFO ) << "Plugin Path is " << pluginPath;
     auto shaderPath = pluginPath.substr( 0, pluginPath.find_last_of( '/' ) ) +
                       "/Resources/ShaderFakeToon/Shaders";
@@ -47,29 +54,30 @@ void FakeToonMaterial::registerMaterial() {
     //      "FakeToon",
     //      FakeToonMaterialConverter() );
     // 2- register the technique builder for rendering
-    Ra::Engine::ShaderConfiguration lpconfig(
+    Ra::Engine::Data::ShaderConfiguration lpconfig(
         "FakeToon", shaderPath + "/VERTEX_SHADER.vert", shaderPath + "/FRAGMENT_SHADER.frag" );
-    Ra::Engine::ShaderConfigurationFactory::addConfiguration( lpconfig );
+    Ra::Engine::Data::ShaderConfigurationFactory::addConfiguration( lpconfig );
 
-    Ra::Engine::ShaderConfiguration dpconfig( "DepthAmbiantFakeToon",
-                                              shaderPath + "/VERTEX_SHADER.vert",
-                                              shaderPath + "/FRAGMENT_SHADER.frag" );
-    Ra::Engine::ShaderConfigurationFactory::addConfiguration( dpconfig );
+    Ra::Engine::Data::ShaderConfiguration dpconfig( "DepthAmbiantFakeToon",
+                                                    shaderPath + "/VERTEX_SHADER.vert",
+                                                    shaderPath + "/FRAGMENT_SHADER.frag" );
+    Ra::Engine::Data::ShaderConfigurationFactory::addConfiguration( dpconfig );
 
-    Ra::Engine::EngineRenderTechniques::registerDefaultTechnique(
-        "FakeToon", []( Ra::Engine::RenderTechnique& rt, bool /*isTransparent*/ ) {
+    Ra::Engine::Rendering::EngineRenderTechniques::registerDefaultTechnique(
+        "FakeToon", []( Ra::Engine::Rendering::RenderTechnique& rt, bool /*isTransparent*/ ) {
             // Configuration for RenderTechnique::LIGHTING_OPAQUE (Mandatory)
-            auto lpconfig = Ra::Engine::ShaderConfigurationFactory::getConfiguration( "FakeToon" );
-            rt.setConfiguration( *lpconfig, Ra::Engine::DefaultRenderingPasses::LIGHTING_OPAQUE );
+            auto lpconfig =
+                Ra::Engine::Data::ShaderConfigurationFactory::getConfiguration( "FakeToon" );
+            rt.setConfiguration( *lpconfig, Ra::Engine::Rendering::DefaultRenderingPasses::LIGHTING_OPAQUE );
             // Configuration for RenderTechnique::Z_PREPASS
-            auto dpconfig =
-                Ra::Engine::ShaderConfigurationFactory::getConfiguration( "DepthAmbiantFakeToon" );
-            rt.setConfiguration( *dpconfig, Ra::Engine::DefaultRenderingPasses::Z_PREPASS );
+            auto dpconfig = Ra::Engine::Data::ShaderConfigurationFactory::getConfiguration(
+                "DepthAmbiantFakeToon" );
+            rt.setConfiguration( *dpconfig, Ra::Engine::Rendering::DefaultRenderingPasses::Z_PREPASS );
             // Configuration for RenderTechnique::LIGHTING_TRANSPARENT
         } );
 }
 void FakeToonMaterial::unregisterMaterial() {
-    Ra::Engine::EngineRenderTechniques::removeDefaultTechnique( "FakeToon" );
+    Ra::Engine::Rendering::EngineRenderTechniques::removeDefaultTechnique( "FakeToon" );
 }
 
 } // namespace FakeToonPluginExample

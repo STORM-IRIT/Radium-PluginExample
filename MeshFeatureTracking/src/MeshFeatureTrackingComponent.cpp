@@ -4,45 +4,45 @@
 #include <Core/Geometry/TriangleMesh.hpp>
 #include <Core/Utils/Log.hpp>
 
-#include <Engine/Entity/Entity.hpp>
-#include <Engine/Managers/ComponentMessenger/ComponentMessenger.hpp>
-#include <Engine/Managers/SystemDisplay/SystemDisplay.hpp>
+#include <Engine/Scene/Entity.hpp>
+#include <Engine/Scene/ComponentMessenger.hpp>
+#include <Engine/Scene/SystemDisplay.hpp>
 #include <Engine/RadiumEngine.hpp>
-#include <Engine/Renderer/Material/BlinnPhongMaterial.hpp>
-#include <Engine/Renderer/Material/Material.hpp>
-#include <Engine/Renderer/Mesh/Mesh.hpp>
-#include <Engine/Renderer/RenderObject/RenderObject.hpp>
-#include <Engine/Renderer/RenderObject/RenderObjectManager.hpp>
+#include <Engine/Data/BlinnPhongMaterial.hpp>
+#include <Engine/Data/Material.hpp>
+#include <Engine/Data/Mesh.hpp>
+#include <Engine/Rendering/RenderObject.hpp>
+#include <Engine/Rendering/RenderObjectManager.hpp>
 
 constexpr Scalar POINT_SCALE_FACTOR = 1_ra / 500;
 
-using Ra::Engine::ComponentMessenger;
-using MeshRenderMode = Ra::Engine::Mesh::MeshRenderMode;
-using PickingMode    = Ra::Engine::Renderer::PickingMode;
+using Ra::Engine::Scene::ComponentMessenger;
+using MeshRenderMode = Ra::Engine::Data::Mesh::MeshRenderMode;
+using PickingMode    = Ra::Engine::Rendering::Renderer::PickingMode;
 using Ra::Core::Utils::TLogLevel;
 
 namespace MeshFeatureTrackingPlugin {
 MeshFeatureTrackingComponent::MeshFeatureTrackingComponent( const std::string& name ) :
-    Component( name, Ra::Engine::SystemEntity::getInstance() ),
+    Component( name, Ra::Engine::Scene::SystemEntity::getInstance() ),
     m_pickedMesh( nullptr ) {
-    m_data.m_mode = Ra::Engine::Renderer::PickingMode::RO;
+    m_data.m_mode = Ra::Engine::Rendering::Renderer::PickingMode::RO;
 }
 
 MeshFeatureTrackingComponent::~MeshFeatureTrackingComponent() {}
 
 void MeshFeatureTrackingComponent::initialize() {
-    std::shared_ptr<Ra::Engine::Mesh> display( new Ra::Engine::Mesh( "PickingManagerSphere" ) );
+    std::shared_ptr<Ra::Engine::Data::Mesh> display( new Ra::Engine::Data::Mesh( "PickingManagerSphere" ) );
     display->loadGeometry( Ra::Core::Geometry::makeParametricSphere( 1_ra ) );
-    std::shared_ptr<Ra::Engine::Material> material;
-    auto bpMaterial  = new Ra::Engine::BlinnPhongMaterial( "PickingManageSphereMaterial" );
+    std::shared_ptr<Ra::Engine::Data::Material> material;
+    auto bpMaterial  = new Ra::Engine::Data::BlinnPhongMaterial( "PickingManageSphereMaterial" );
     bpMaterial->m_kd = Ra::Core::Utils::Color::Green();
     material.reset( bpMaterial );
-    m_RO             = Ra::Engine::RenderObject::createRenderObject(
+    m_RO             = Ra::Engine::Rendering::RenderObject::createRenderObject(
         "FeaturePickingManagerSphereRO",
         this,
-        Ra::Engine::RenderObjectType::Geometry,
+        Ra::Engine::Rendering::RenderObjectType::Geometry,
         display,
-        Ra::Engine::RenderTechnique::createDefaultRenderTechnique() );
+        Ra::Engine::Rendering::RenderTechnique::createDefaultRenderTechnique() );
     m_RO->setMaterial( material );
     m_RO->setPickable( false );
     m_RO->setVisible( false );
@@ -193,8 +193,8 @@ void getPos_TF2T( uint tf, uint& v1, uint& v2, uint& t1, uint& t2 ) {
 }
 } // namespace
 
-void MeshFeatureTrackingComponent::setData( const Ra::Engine::Renderer::PickingResult& data ) {
-    using Ra::Engine::Displayable;
+void MeshFeatureTrackingComponent::setData( const Ra::Engine::Rendering::Renderer::PickingResult& data ) {
+    using Ra::Engine::Data::Displayable;
 
     if ( !getRoMgr()->exists( data.m_roIdx ) )
     {
@@ -204,7 +204,7 @@ void MeshFeatureTrackingComponent::setData( const Ra::Engine::Renderer::PickingR
 
     {
         auto ro                = getRoMgr()->getRenderObject( data.m_roIdx );
-        Ra::Engine::Mesh* mesh = dynamic_cast<Ra::Engine::Mesh*>( ro->getMesh().get() );
+        Ra::Engine::Data::Mesh* mesh = dynamic_cast<Ra::Engine::Data::Mesh*>( ro->getMesh().get() );
         if ( mesh == nullptr )
         {
             LOG( TLogLevel::logWARNING ) << "MeshFeatureTracking is available only for meshes";
