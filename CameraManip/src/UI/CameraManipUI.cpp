@@ -1,4 +1,4 @@
-#include "CameraManipUI.h"
+#include "CameraManipUI.hpp"
 
 #include "ui_CameraManipUI.h"
 

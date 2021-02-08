@@ -3,7 +3,7 @@
 
 #include <DummyPluginMacros.hpp>
 
-#include <Engine/System/System.hpp>
+#include <Engine/Scene/System.hpp>
 
 namespace Ra {
 namespace Core {
@@ -27,13 +27,13 @@ struct DummyData {
     int bar;
 };
 
-class DummySystem : public Ra::Engine::System
+class DummySystem : public Ra::Engine::Scene::System
 {
   public:
     DummySystem();
     ~DummySystem();
 
-    void handleAssetLoading( Ra::Engine::Entity* entity,
+    void handleAssetLoading( Ra::Engine::Scene::Entity* entity,
                              const Ra::Core::Asset::FileData* data ) override;
 
     void generateTasks( Ra::Core::TaskQueue* taskQueue,

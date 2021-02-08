@@ -10,7 +10,7 @@
 #include <QObject>
 #include <QtPlugin>
 
-#include <UI/MeshPaintUI.h>
+#include <UI/MeshPaintUI.hpp>
 
 #include <MeshPaintPluginMacros.hpp>
 
@@ -59,7 +59,7 @@ class MeshPaintPluginC : public QObject, Ra::Plugins::RadiumPluginInterface
   private:
     MeshPaintUI* m_widget;
 
-    Ra::GuiBase::SelectionManager* m_selectionManager;
+    Ra::Gui::SelectionManager* m_selectionManager;
     Ra::Gui::PickingManager* m_PickingManager;
 
     class MeshPaintSystem* m_system;

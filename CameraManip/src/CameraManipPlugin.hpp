@@ -5,7 +5,7 @@
 #include <PluginBase/RadiumPluginInterface.hpp>
 #include <QObject>
 
-#include <UI/CameraManipUI.h>
+#include <UI/CameraManipUI.hpp>
 
 #include <CameraManipPluginMacros.hpp>
 
@@ -56,7 +56,7 @@ class CameraManipPluginC : public QObject, Ra::Plugins::RadiumPluginInterface
     CameraManipUI* m_widget;
 
     Ra::Engine::RadiumEngine* m_engine;
-    Ra::GuiBase::SelectionManager* m_selectionManager;
+    Ra::Gui::SelectionManager* m_selectionManager;
     Ra::Gui::Viewer* m_viewer;
 };
 

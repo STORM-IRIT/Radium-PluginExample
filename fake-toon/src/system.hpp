@@ -3,7 +3,7 @@
 
 #include "plugin.hpp"
 
-#include <Engine/System/System.hpp>
+#include <Engine/Scene/System.hpp>
 
 namespace FakeToonPluginExample {
 /*!
@@ -13,14 +13,14 @@ namespace FakeToonPluginExample {
  * and use the #ComponentMessenger to access and modify the 3d model geometry.
  *
  */
-class FAKE_TOON_PLUGIN_EXAMPLE_API MySystem : public QObject, public Ra::Engine::System
+class FAKE_TOON_PLUGIN_EXAMPLE_API MySystem : public QObject, public Ra::Engine::Scene::System
 {
     Q_OBJECT
   public:
     MySystem();
     virtual ~MySystem();
 
-    virtual void handleAssetLoading( Ra::Engine::Entity* entity,
+    virtual void handleAssetLoading( Ra::Engine::Scene::Entity* entity,
                                      const Ra::Core::Asset::FileData* fileData ) override;
 
     virtual void generateTasks( Ra::Core::TaskQueue* taskQueue,

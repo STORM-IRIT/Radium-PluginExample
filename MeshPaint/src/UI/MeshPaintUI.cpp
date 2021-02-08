@@ -1,4 +1,4 @@
-#include "MeshPaintUI.h"
+#include "MeshPaintUI.hpp"
 
 #include <iostream>
 

@@ -19,15 +19,15 @@ class RadiumEngine;
 namespace DummyPlugin {
 class DummySystem;
 
-class DummyPlugin : public QObject, Ra::Plugins::RadiumPluginInterface
+class DummyPluginC : public QObject, Ra::Plugins::RadiumPluginInterface
 {
     Q_OBJECT
     Q_RADIUM_PLUGIN_METADATA
     Q_INTERFACES( Ra::Plugins::RadiumPluginInterface )
 
   public:
-    DummyPlugin() = default;
-    ~DummyPlugin();
+    DummyPluginC() = default;
+    ~DummyPluginC();
 
     void registerPlugin( const Ra::Plugins::Context& context ) override;
 

@@ -8,17 +8,17 @@
 #include <Core/Tasks/TaskQueue.hpp>
 #include <Core/Utils/StringUtils.hpp>
 
-#include <Engine/Entity/Entity.hpp>
-#include <Engine/Managers/ComponentMessenger/ComponentMessenger.hpp>
-#include <Engine/Managers/EntityManager/EntityManager.hpp>
+#include <Engine/Scene/Entity.hpp>
+#include <Engine/Scene/ComponentMessenger.hpp>
+#include <Engine/Scene/EntityManager.hpp>
 #include <Engine/RadiumEngine.hpp>
-#include <Engine/Renderer/Mesh/Mesh.hpp>
+#include <Engine/Data/Mesh.hpp>
 
 namespace MyPluginExample {
 
 using namespace Ra::Core::Utils;
 
-MySystem::MySystem() : Ra::Engine::System() {
+MySystem::MySystem() : Ra::Engine::Scene::System() {
     LOG( logINFO ) << "Example Plugin System created.";
 }
 
@@ -26,7 +26,7 @@ MySystem::~MySystem() {
     LOG( logINFO ) << "Example Plugin System destroyed.";
 }
 
-void MySystem::handleAssetLoading( Ra::Engine::Entity* entity,
+void MySystem::handleAssetLoading( Ra::Engine::Scene::Entity* entity,
                                    const Ra::Core::Asset::FileData* fileData ) {
     const auto& components = entity->getComponents();
     QString entityName     = QString::fromStdString( entity->getName() );
@@ -52,8 +52,8 @@ void MySystem::compute( Param p ) {
     using Ra::Core::TriangleMesh;
     using Ra::Core::Vector3;
     using Ra::Core::Geometry::TopologicalMesh;
-    using Ra::Engine::ComponentMessenger;
-    using Ra::Engine::Mesh;
+    using Ra::Engine::Scene::ComponentMessenger;
+    using Ra::Engine::Data::Mesh;
 
     LOG( logINFO ) << "Example Plugin System: computation requested.";
 

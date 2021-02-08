@@ -3,7 +3,7 @@
 
 #include <QFrame>
 
-#include <GuiBase/Utils/PickingManager.hpp>
+#include <Gui/Utils/PickingManager.hpp>
 
 namespace UI {
 class CameraManipUI;

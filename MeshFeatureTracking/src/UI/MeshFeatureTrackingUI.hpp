@@ -2,7 +2,7 @@
 #define MESHFEATURETRACKINGUI_H
 
 #include <QFrame>
-#include <GuiBase/Utils/PickingManager.hpp>
+#include <Gui/Utils/PickingManager.hpp>
 
 namespace UI {
 class MeshFeatureTrackingUi;
@@ -18,7 +18,7 @@ class MeshFeatureTrackingUI;
 
 struct FeatureData {
     /// feature type: only vertex, edge, triangles are supported.
-    Ra::Engine::Renderer::PickingMode m_mode;
+    Ra::Engine::Rendering::Renderer::PickingMode m_mode;
     /// vertices indices in 0-2 according to m_mode, plus triangle idx in 3 for triangles
     std::array< int, 4 > m_data;
 };

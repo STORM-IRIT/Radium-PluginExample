@@ -15,7 +15,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 project(MeshPaint VERSION 1.0.0 LANGUAGES CXX)
 
 # Qt stuff
-find_package(Radium REQUIRED Core Engine PluginBase GuiBase IO)
+find_package(Radium REQUIRED Core Engine PluginBase Gui IO)
 find_package(Qt5 COMPONENTS Core Widgets REQUIRED)
 set(Qt5_LIBRARIES Qt5::Core Qt5::Widgets)
 set(CMAKE_AUTOMOC ON)
@@ -33,7 +33,7 @@ set(mp_headers
 	src/MeshPaintSystem.hpp
 	src/MeshPaintPlugin.hpp
 	src/MeshPaintPluginMacros.hpp
-	src/UI/MeshPaintUI.h
+	src/UI/MeshPaintUI.hpp
         )
 
 set(mp_uis
@@ -64,7 +64,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
         Radium::Core
         Radium::Engine
         Radium::PluginBase
-        Radium::GuiBase
+        Radium::Gui
         ${Qt5_LIBRARIES}
         )
 
@@ -75,6 +75,5 @@ endif(INSTALL_IN_RADIUM_BUNDLE)
 
 configure_radium_plugin(
         NAME ${PROJECT_NAME}
-        RESOURCES ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shaders
 	"${ARGS}"
 )

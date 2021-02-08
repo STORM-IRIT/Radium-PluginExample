@@ -6,17 +6,17 @@
 #include <QFileDialog>
 #include <QSettings>
 
-#include <Engine/ItemModel/ItemEntry.hpp>
-#include <Engine/Managers/CameraManager/CameraManager.hpp>
-#include <Engine/Managers/EntityManager/EntityManager.hpp>
-#include <Engine/Renderer/Camera/Camera.hpp>
+#include <Engine/Scene/ItemEntry.hpp>
+#include <Engine/Scene/CameraManager.hpp>
+#include <Engine/Scene/EntityManager.hpp>
+#include <Engine/Scene/Camera.hpp>
 
-#include <GuiBase/SelectionManager/SelectionManager.hpp>
-#include <GuiBase/Viewer/TrackballCameraManipulator.hpp>
-#include <GuiBase/Viewer/Viewer.hpp>
+#include <Gui/SelectionManager/SelectionManager.hpp>
+#include <Gui/Viewer/TrackballCameraManipulator.hpp>
+#include <Gui/Viewer/Viewer.hpp>
 
 #include "ui_CameraManipUI.h"
-#include <UI/CameraManipUI.h>
+#include <UI/CameraManipUI.hpp>
 
 namespace CameraManipPlugin {
 
@@ -36,7 +36,7 @@ void CameraManipPluginC::registerPlugin( const Ra::Plugins::Context& context ) {
     m_selectionManager = context.m_selectionManager;
     m_viewer           = context.m_viewer;
     connect( m_selectionManager,
-             &Ra::GuiBase::SelectionManager::currentChanged,
+             &Ra::Gui::SelectionManager::currentChanged,
              this,
              &CameraManipPluginC::onCurrentChanged );
     connect( this,
@@ -85,11 +85,11 @@ QAction* CameraManipPluginC::getAction( int id ) {
 void CameraManipPluginC::useSelectedCamera() {
     if ( m_selectionManager->hasSelection() )
     {
-        const Ra::Engine::ItemEntry& ent = m_selectionManager->currentItem();
+        const Ra::Engine::Scene::ItemEntry& ent = m_selectionManager->currentItem();
         if ( ent.m_component == nullptr ) { return; }
         if ( ent.m_component->getName().compare( 0, 7, "CAMERA_" ) == 0 )
         {
-            Ra::Engine::Camera* camera = static_cast<Ra::Engine::Camera*>( ent.m_component );
+            Ra::Engine::Scene::Camera* camera = static_cast<Ra::Engine::Scene::Camera*>( ent.m_component );
             m_viewer->getCameraManipulator()->getCamera()->show(true );
             m_viewer->getCameraManipulator()->setCamera(camera );
             emit askForUpdate();
@@ -125,11 +125,11 @@ void CameraManipPluginC::saveCamera() {
 void CameraManipPluginC::createCamera() {
     // Create new entity with camera component only
     auto camMngr =
-        static_cast<Ra::Engine::CameraManager*>( m_engine->getSystem( "DefaultCameraManager" ) );
+        static_cast<Ra::Engine::Scene::CameraManager*>( m_engine->getSystem( "DefaultCameraManager" ) );
     std::string camName = "CAMERA_" + std::to_string( camMngr->count() );
     auto entity         = m_engine->getEntityManager()->createEntity( camName );
-    Ra::Engine::Camera* cam =
-        new Ra::Engine::Camera( entity, camName, m_viewer->width(), m_viewer->height() );
+    Ra::Engine::Scene::Camera* cam =
+        new Ra::Engine::Scene::Camera( entity, camName, m_viewer->width(), m_viewer->height() );
     // Copy Camera data
     auto manip  = static_cast<Ra::Gui::TrackballCameraManipulator*>( m_viewer->getCameraManipulator() );
     auto camera = manip->getCamera();
@@ -150,7 +150,7 @@ void CameraManipPluginC::onCurrentChanged( const QModelIndex& current, const QMo
     m_widget->ui->m_useCamera->setEnabled( false );
     if ( m_selectionManager->hasSelection() )
     {
-        const Ra::Engine::ItemEntry& ent = m_selectionManager->currentItem();
+        const Ra::Engine::Scene::ItemEntry& ent = m_selectionManager->currentItem();
         if ( ent.m_component == nullptr ) { return; }
         if ( ent.m_component->getName().compare( 0, 7, "CAMERA_" ) == 0 )
         { m_widget->ui->m_useCamera->setEnabled( true ); }

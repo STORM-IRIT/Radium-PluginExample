@@ -4,16 +4,16 @@
 #include <Core/Asset/FileData.hpp>
 #include <Core/Utils/Index.hpp>
 #include <Core/Utils/Log.hpp>
-#include <Engine/Entity/Entity.hpp>
-#include <Engine/Managers/ComponentMessenger/ComponentMessenger.hpp>
+#include <Engine/Scene/Entity.hpp>
+#include <Engine/Scene/ComponentMessenger.hpp>
 #include <Engine/RadiumEngine.hpp>
-#include <Engine/Renderer/Mesh/Mesh.hpp>
-#include <Engine/Renderer/RenderObject/RenderObject.hpp>
-#include <Engine/Renderer/RenderObject/RenderObjectManager.hpp>
+#include <Engine/Data/Mesh.hpp>
+#include <Engine/Rendering/RenderObject.hpp>
+#include <Engine/Rendering/RenderObjectManager.hpp>
 
 namespace FakeToonPluginExample {
 using namespace Ra::Core::Utils;
-MySystem::MySystem() : Ra::Engine::System() {
+MySystem::MySystem() : Ra::Engine::Scene::System() {
     LOG( logINFO ) << "FakeToon Plugin System created.";
 }
 
@@ -22,13 +22,13 @@ MySystem::~MySystem() {
     LOG( logINFO ) << "FakeToon Plugin System destroyed.";
 }
 
-void MySystem::handleAssetLoading( Ra::Engine::Entity* entity,
+void MySystem::handleAssetLoading( Ra::Engine::Scene::Entity* entity,
                                    const Ra::Core::Asset::FileData* fileData ) {
     using Ra::Core::Utils::Index;
 
     auto roMgr = Ra::Engine::RadiumEngine::getInstance()->getRenderObjectManager();
 
-    auto builder = Ra::Engine::EngineRenderTechniques::getDefaultTechnique( "FakeToon" );
+    auto builder = Ra::Engine::Rendering::EngineRenderTechniques::getDefaultTechnique( "FakeToon" );
 
     if ( builder.first )
     {
@@ -36,10 +36,10 @@ void MySystem::handleAssetLoading( Ra::Engine::Entity* entity,
         auto data = fileData->getGeometryData();
         for ( auto geom : data )
         {
-            if ( Ra::Engine::ComponentMessenger::getInstance()->canGet<Index>( entity,
+            if ( Ra::Engine::Scene::ComponentMessenger::getInstance()->canGet<Index>( entity,
                                                                                geom->getName() ) )
             {
-                auto idx = *Ra::Engine::ComponentMessenger::getInstance()->getterCallback<Index>(
+                auto idx = *Ra::Engine::Scene::ComponentMessenger::getInstance()->getterCallback<Index>(
                     entity, geom->getName() )();
 
                 if ( idx.isValid() && roMgr->exists( idx ) )

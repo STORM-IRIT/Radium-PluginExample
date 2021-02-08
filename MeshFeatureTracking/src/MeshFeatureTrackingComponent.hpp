@@ -3,19 +3,21 @@
 
 #include <MeshFeatureTrackingPluginMacros.hpp>
 
-#include <Engine/Component/Component.hpp>
-#include <GuiBase/Utils/PickingManager.hpp>
+#include <Engine/Scene/Component.hpp>
+#include <Gui/Utils/PickingManager.hpp>
 
-#include <UI/MeshFeatureTrackingUI.h>
+#include <UI/MeshFeatureTrackingUI.hpp>
 
 namespace Ra {
 namespace Engine {
+namespace Data{
 class Mesh;
+}
 }
 } // namespace Ra
 
 namespace MeshFeatureTrackingPlugin {
-class MeshFeatureTrackingComponent : public Ra::Engine::Component
+class MeshFeatureTrackingComponent : public Ra::Engine::Scene::Component
 {
   public:
     MeshFeatureTrackingComponent( const std::string& name );
@@ -24,7 +26,7 @@ class MeshFeatureTrackingComponent : public Ra::Engine::Component
 
     virtual void initialize() override;
 
-    void setData( const Ra::Engine::Renderer::PickingResult& data );
+    void setData( const Ra::Engine::Rendering::Renderer::PickingResult& data );
 
     void setVertexIdx( uint idx );
     void setTriangleIdx( uint idx );
@@ -46,8 +48,8 @@ class MeshFeatureTrackingComponent : public Ra::Engine::Component
 
     FeatureData m_data;
     Ra::Core::Utils::Index m_pickedRoIdx;
-    Ra::Engine::Mesh* m_pickedMesh;
-    Ra::Engine::RenderObject* m_RO;
+    Ra::Engine::Data::Mesh* m_pickedMesh;
+    Ra::Engine::Rendering::RenderObject* m_RO;
 };
 } // namespace MeshFeatureTrackingPlugin
 
