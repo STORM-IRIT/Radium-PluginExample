@@ -133,8 +133,8 @@ void MeshPaintComponent::paintMesh( const Ra::Engine::Rendering::Renderer::Picki
     CORE_ASSERT( m_mesh != nullptr, "We should be have a Mesh storing a TriangleMesh here" );
 
     // check it's for us
-    if ( *m_renderObjectReader() != picking.m_roIdx ||
-         picking.m_mode == Ra::Engine::Rendering::Renderer::RO )
+    if ( *m_renderObjectReader() != picking.getRoIdx() ||
+         picking.getMode() == Ra::Engine::Rendering::Renderer::RO )
     { return; }
     auto pickingRenderMode = m_mesh->pickingRenderMode();
 
@@ -149,8 +149,8 @@ void MeshPaintComponent::paintMesh( const Ra::Engine::Rendering::Renderer::Picki
            m_mesh->getRenderMode() == Ra::Engine::Data::Mesh::RM_TRIANGLE_FAN ) )
     { return; }
     if ( pickingRenderMode == Ra::Engine::Data::Displayable::PKM_POINTS &&
-         ( picking.m_mode != Ra::Engine::Rendering::Renderer::VERTEX &&
-           picking.m_mode != Ra::Engine::Rendering::Renderer::C_VERTEX ) )
+         ( picking.getMode() != Ra::Engine::Rendering::Renderer::VERTEX &&
+           picking.getMode() != Ra::Engine::Rendering::Renderer::C_VERTEX ) )
     { return; }
 
     // Could also be accessed using
@@ -165,24 +165,24 @@ void MeshPaintComponent::paintMesh( const Ra::Engine::Rendering::Renderer::Picki
     auto& colorAttrib    = m_mesh->getCoreGeometry().getAttrib( m_currentColorAttribHdl );
     auto& colorContainer = colorAttrib.getDataWithLock();
 
-    switch ( picking.m_mode )
+    switch ( picking.getMode() )
     {
     case Ra::Engine::Rendering::Renderer::VERTEX:
         [[fallthrough]];
     case Ra::Engine::Rendering::Renderer::C_VERTEX: {
         if ( pickingRenderMode == Ra::Engine::Data::Displayable::PKM_POINTS )
         {
-            for ( auto e : picking.m_elementIdx )
+            for ( const auto& [f, v, e] : picking.getIndices() )
             {
-                colorContainer[size_t( e )] = color;
+                colorContainer[size_t( v )] = color;
             }
         }
         else
         {
-            for ( size_t e = 0; e < picking.m_elementIdx.size(); ++e )
+            for ( const auto& [f, v, e] : picking.getIndices() )
             {
-                size_t v          = t[size_t( picking.m_elementIdx[e] )]( picking.m_vertexIdx[e] );
-                colorContainer[v] = color;
+                const auto& elt               = t[size_t( f )]( v );
+                colorContainer[size_t( elt )] = color;
             }
         }
         m_mesh->setDirty( Mesh::VERTEX_COLOR );
@@ -191,11 +191,11 @@ void MeshPaintComponent::paintMesh( const Ra::Engine::Rendering::Renderer::Picki
     case Ra::Engine::Rendering::Renderer::EDGE:
         [[fallthrough]];
     case Ra::Engine::Rendering::Renderer::C_EDGE: {
-        for ( size_t e = 0; e < picking.m_elementIdx.size(); ++e )
+        for ( const auto& [f, v, e] : picking.getIndices() )
         {
-            const auto& elt    = t[size_t( picking.m_elementIdx[e] )];
-            size_t v1          = elt( ( picking.m_edgeIdx[e] + 1 ) % 3 );
-            size_t v2          = elt( ( picking.m_edgeIdx[e] + 2 ) % 3 );
+            const auto& elt    = t[size_t( f )];
+            size_t v1          = elt( ( e + 1 ) % 3 );
+            size_t v2          = elt( ( e + 2 ) % 3 );
             colorContainer[v1] = colorContainer[v2] = color;
         }
 
@@ -204,9 +204,9 @@ void MeshPaintComponent::paintMesh( const Ra::Engine::Rendering::Renderer::Picki
     case Ra::Engine::Rendering::Renderer::TRIANGLE:
         [[fallthrough]];
     case Ra::Engine::Rendering::Renderer::C_TRIANGLE: {
-        for ( size_t e = 0; e < picking.m_elementIdx.size(); ++e )
+        for ( const auto& [f, v, e] : picking.getIndices() )
         {
-            const auto& elt    = t[size_t( picking.m_elementIdx[e] )];
+            const auto& elt    = t[size_t( f )];
             size_t v1          = elt( 0 );
             size_t v2          = elt( 1 );
             size_t v3          = elt( 2 );
