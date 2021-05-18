@@ -6,7 +6,7 @@
 #include <QFileDialog>
 #include <QSettings>
 
-#include <Core/Utils/Camera.hpp>
+#include <Core/Asset/Camera.hpp>
 #include <Engine/Scene/CameraManager.hpp>
 #include <Engine/Scene/EntityManager.hpp>
 #include <Engine/Scene/ItemEntry.hpp>
@@ -82,12 +82,16 @@ void CameraManipPluginC::useSelectedCamera() {
     {
         const Ra::Engine::Scene::ItemEntry& ent = m_selectionManager->currentItem();
         if ( ent.m_component == nullptr ) { return; }
-        if ( ent.m_component->getName().compare( 0, 7, "CAMERA_" ) == 0 )
+
+        auto comp          = static_cast<Ra::Engine::Scene::CameraComponent*>( ent.m_component );
+        auto cameraManager = static_cast<Ra::Engine::Scene::CameraManager*>(
+                Ra::Engine::RadiumEngine::getInstance()->getSystem( "DefaultCameraManager" ) );
+        auto cameraIndex = cameraManager->getCameraIndex( comp );
+
+        if ( cameraIndex.isValid() )
         {
-            auto comp = static_cast<Ra::Engine::Scene::CameraComponent*>( ent.m_component );
             comp->show( true );
-            auto camera = static_cast<Ra::Core::Utils::Camera*>( comp->getCamera() );
-            m_viewer->getCameraManipulator()->setCamera( camera );
+            cameraManager->activate( cameraIndex );
             emit askForUpdate();
         }
     }
@@ -123,21 +127,10 @@ void CameraManipPluginC::createCamera() {
     // Create new entity with camera component only
     auto camMngr = static_cast<Ra::Engine::Scene::CameraManager*>(
         m_engine->getSystem( "DefaultCameraManager" ) );
-    std::string camName = "CAMERA_" + std::to_string( camMngr->count() );
-    auto entity         = m_engine->getEntityManager()->createEntity( camName );
-    Ra::Engine::Scene::CameraComponent* cam =
-        new Ra::Engine::Scene::CameraComponent( entity, camName, m_viewer->width(), m_viewer->height() );
-    // Copy Camera data
-    auto manip =
-        static_cast<Ra::Gui::TrackballCameraManipulator*>( m_viewer->getCameraManipulator() );
-    auto camera = manip->getCamera();
-    cam->resize( camera->getWidth(), camera->getHeight() );
-    cam->setType( camera->getType() );
-    cam->setFrame( camera->getFrame() );
-    cam->setFOV( camera->getFOV() );
-    cam->setZNear( camera->getZNear() );
-    cam->setZFar( camera->getZFar() );
-    cam->setZoomFactor( camera->getZoomFactor() );
+    std::string camName                     = "CAMERA_" + std::to_string( camMngr->count() );
+    auto entity                             = m_engine->getEntityManager()->createEntity( camName );
+    Ra::Engine::Scene::CameraComponent* cam = new Ra::Engine::Scene::CameraComponent(
+        entity, camName, m_viewer->width(), m_viewer->height() );
     cam->initialize();
     // Register entity and camera in Camera manager
     camMngr->addCamera( cam );
