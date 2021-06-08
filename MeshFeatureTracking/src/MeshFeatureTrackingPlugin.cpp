@@ -4,10 +4,10 @@
 #include <QIcon>
 #include <QToolBar>
 
+#include <Engine/RadiumEngine.hpp>
 #include <Engine/Scene/Entity.hpp>
 #include <Engine/Scene/EntityManager.hpp>
 #include <Engine/Scene/SignalManager.hpp>
-#include <Engine/RadiumEngine.hpp>
 
 #include <Gui/SelectionManager/SelectionManager.hpp>
 #include <Gui/Utils/PickingManager.hpp>
@@ -25,8 +25,10 @@ MeshFeatureTrackingPluginC::~MeshFeatureTrackingPluginC() {}
 
 void MeshFeatureTrackingPluginC::registerPlugin( const Ra::Plugins::Context& context ) {
     // register system
-    context.m_engine->getSignalManager()->m_frameEndCallbacks.push_back(
-        std::bind( &MeshFeatureTrackingPluginC::update, this ) );
+    auto signalManager     = Ra::Engine::RadiumEngine::getInstance()->getSignalManager();
+    auto& frameEndObserver = signalManager->getEndFrameNotifier();
+    frameEndObserver.attachMember( this, &MeshFeatureTrackingPluginC::update );
+
     // create sphere component
     m_component = new MeshFeatureTrackingComponent( "TrackingSphere" );
     m_component->initialize();
