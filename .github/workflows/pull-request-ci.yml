@@ -18,10 +18,9 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - { name: "Windows MSVC", suffix: "Windows", os: windows-latest, cc: "cl.exe", cxx: "cl.exe" }
-          - { name: "Ubuntu gcc", suffix: "Linux-gcc8", os: ubuntu-18.04, cc: "gcc-8", cxx: "g++-8" }
-          - { name: "Ubuntu gcc", suffix: "Linux-gcc10", os: ubuntu-20.04, cc: "gcc-10", cxx: "g++-10" }
-          - { name: "MacOS clang", suffix: "macOS", os: macos-latest, cc: "clang", cxx: "clang++" }
+          - { name: "Windows MSVC", suffix: "Windows", os: windows-latest, cc: "cl.exe", cxx: "cl.exe", assimp: "OFF" }
+          - { name: "Ubuntu gcc", suffix: "Linux-gcc10", os: ubuntu-20.04, cc: "gcc-10", cxx: "g++-10", assimp: "ON" }
+          - { name: "MacOS clang", suffix: "macOS", os: macos-latest, cc: "clang", cxx: "clang++", assimp: "ON" }
 
     steps:
       - uses: seanmiddleditch/gha-setup-ninja@master
