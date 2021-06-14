@@ -165,6 +165,8 @@ void MeshPaintComponent::paintMesh( const Ra::Engine::Rendering::Renderer::Picki
     auto& colorAttrib    = m_mesh->getCoreGeometry().getAttrib( m_currentColorAttribHdl );
     auto& colorContainer = colorAttrib.getDataWithLock();
 
+    picking.removeDuplicatedIndices();
+
     switch ( picking.getMode() )
     {
     case Ra::Engine::Rendering::Renderer::VERTEX:

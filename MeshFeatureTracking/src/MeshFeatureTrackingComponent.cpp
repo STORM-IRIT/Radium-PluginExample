@@ -235,6 +235,9 @@ void MeshFeatureTrackingComponent::setData(
         m_data.m_mode = PickingMode::RO;
         return;
     }
+
+    data.removeDuplicatedIndices();
+
     // fill data accordingly
     auto [elementIdx, vertexIdx, edgeIdx] = data.getIndices()[0];
     if ( rm == MeshRenderMode::RM_POINTS )
