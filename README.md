@@ -111,3 +111,15 @@ This plugin is composed by 4 elements:
     -   it processes paint events.
 
 -   MeshPaintSystem: Implements `Ra::Engine::System`. In this plugin, the system adds a `MeshPaintComponent` to each loaded model.
+
+### Mesh animator
+
+This Plugin is an example of how to animate mesh vertices position or normal.
+
+See MeshAnimator/README.md for usage explanations.
+
+### Entity animator
+
+This plugins shows how to animate the transform of an Entity.
+
+See EntityAnimator/README.md for usage explanations.
