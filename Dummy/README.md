@@ -1,1 +1,0 @@
-# Dummy Radium plugin example
