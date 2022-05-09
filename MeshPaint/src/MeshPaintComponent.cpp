@@ -20,7 +20,7 @@ using namespace Ra::Core::Utils; // log
 namespace MeshPaintPlugin {
 
 static const std::string colAttribName =
-    Ra::Engine::Data::Mesh::getAttribName( Ra::Engine::Data::Mesh::VERTEX_COLOR );
+    Ra::Core::Geometry::getAttribName( Ra::Core::Geometry::MeshAttrib::VERTEX_COLOR );
 
 MeshPaintComponent::MeshPaintComponent( const std::string& name,
                                         Ra::Engine::Scene::Entity* entity ) :
@@ -187,7 +187,7 @@ void MeshPaintComponent::paintMesh( const Ra::Engine::Rendering::Renderer::Picki
                 colorContainer[size_t( elt )] = color;
             }
         }
-        m_mesh->setDirty( Mesh::VERTEX_COLOR );
+        m_mesh->setDirty( Ra::Core::Geometry::MeshAttrib::VERTEX_COLOR );
         break;
     }
     case Ra::Engine::Rendering::Renderer::EDGE:
